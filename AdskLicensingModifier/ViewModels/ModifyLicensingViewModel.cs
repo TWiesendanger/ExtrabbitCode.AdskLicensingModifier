@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.UI;
 using AdskLicensingModifier.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AdskLicensingModifier.Contracts.Services;
@@ -45,8 +44,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         AdskProducts = await ReadAutodeskProductsAsync();
-        FilteredAdskProducts = new Dictionary<string, string>();
-        _filteredYearAdskProducts = new Dictionary<string, string>();
+        FilteredAdskProducts = [];
+        _filteredYearAdskProducts = [];
         if (AdskProducts != null)
         {
             _filteredYearAdskProducts = string.IsNullOrEmpty(SelectedYear)
@@ -57,8 +56,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
         FilteredAdskProducts = _filteredYearAdskProducts;
 
-        ServerTypes = new List<ServerType>(Enum.GetValues(typeof(ServerType)).Cast<ServerType>());
-        LicenseTypes = new List<LicenseType>(Enum.GetValues(typeof(LicenseType)).Cast<LicenseType>());
+        ServerTypes = [..Enum.GetValues(typeof(ServerType)).Cast<ServerType>()];
+        LicenseTypes = [..Enum.GetValues(typeof(LicenseType)).Cast<LicenseType>()];
 
         await CheckPathAsync();
         SetFeatureCode(SelectedYear);
@@ -95,7 +94,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             _ => ""
         };
 
-    private async Task<Dictionary<string, string>?> ReadAutodeskProductsAsync()
+    private static async Task<Dictionary<string, string>?> ReadAutodeskProductsAsync()
     {
         var uri = new Uri("ms-appx:///Assets/resources/AutodeskProducts.txt");
         var productKeys = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);

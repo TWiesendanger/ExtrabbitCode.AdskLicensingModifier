@@ -12,24 +12,16 @@ public class ShellViewModel : ObservableRecipient
     private bool _isBackEnabled;
     private object? _selected;
 
-    public INavigationService NavigationService
-    {
-        get;
-    }
+    public INavigationService NavigationService { get; }
 
-    public INavigationViewService NavigationViewService
-    {
-        get;
-    }
+    public INavigationViewService NavigationViewService { get; }
 
-    public bool IsBackEnabled
-    {
+    public bool IsBackEnabled {
         get => _isBackEnabled;
         set => SetProperty(ref _isBackEnabled, value);
     }
 
-    public object? Selected
-    {
+    public object? Selected {
         get => _selected;
         set => SetProperty(ref _selected, value);
     }

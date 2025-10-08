@@ -10,6 +10,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.UI;
+// ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
 
@@ -23,22 +24,17 @@ public partial class SettingsViewModel : ObservableObject
     private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
 
-    public ElementTheme ElementTheme
-    {
+    public ElementTheme ElementTheme {
         get => _elementTheme;
         set => SetProperty(ref _elementTheme, value);
     }
 
-    public string VersionDescription
-    {
+    public string VersionDescription {
         get => _versionDescription;
         set => SetProperty(ref _versionDescription, value);
     }
 
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
+    public ICommand SwitchThemeCommand { get; }
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService, IGenericMessageDialogService messageDialogService)
     {

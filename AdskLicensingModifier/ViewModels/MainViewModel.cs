@@ -4,15 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AdskLicensingModifier.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+public partial class MainViewModel(INavigationService navigationService) : ObservableObject
 {
-    private readonly INavigationService _navigationService;
-
-    public MainViewModel(INavigationService navigationService)
-    {
-        _navigationService = navigationService;
-    }
-
     [RelayCommand]
     public async Task OpenDocumentation()
     {
@@ -23,7 +16,6 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public void MoveToSettings()
     {
-        _navigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
+        navigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
     }
-
 }

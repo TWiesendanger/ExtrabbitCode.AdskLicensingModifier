@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+// ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
 
@@ -9,10 +10,7 @@ public partial class ProductKeyViewModel : ObservableObject
     [ObservableProperty] private Dictionary<string, string>? filteredProducts;
 
 
-    public Task Initialization
-    {
-        get;
-    }
+    public Task Initialization { get; }
 
     public ProductKeyViewModel()
     {
@@ -89,10 +87,10 @@ public partial class ProductKeyViewModel : ObservableObject
         combinedList.AddRange(productKeyList2024);
         combinedList.AddRange(productKeyList2025);
 
-        var splitedParts = combinedList.Select((line => line.Split(';'))).ToArray();
+        var splitParts = combinedList.Select((line => line.Split(';'))).ToArray();
         var dict = new Dictionary<string, string>();
 
-        foreach (var part in splitedParts)
+        foreach (var part in splitParts)
         {
             if (dict.ContainsKey(part[0]))
             {
