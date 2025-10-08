@@ -46,7 +46,6 @@
 		<Content Include="Assets\resources\ProductKeys2025.txt" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Remove="Styles\Color.xaml" />
 		<None Remove="Styles\Strings.xaml" />
 		<None Remove="Views\MainPage.xaml" />
 		<None Remove="Views\MessageDialog.xaml" />
@@ -79,7 +78,7 @@
 		<Page Update="Styles\Strings.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Update="Styles\Color.xaml">
+		<Page Update="Styles\Colors.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Views\ProductKeyPage.xaml">

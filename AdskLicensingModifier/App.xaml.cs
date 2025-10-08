@@ -13,7 +13,7 @@ using MainViewModel = AdskLicensingModifier.ViewModels.MainViewModel;
 
 namespace AdskLicensingModifier;
 
-public partial class App : Application
+public partial class App
 {
     public IHost Host
     {
