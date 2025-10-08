@@ -21,6 +21,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <labs:SettingsExpander
+                Margin="{StaticResource MediumBottomMargin}"
                 Description="Set the theme of the app to your liking or let the app decide based on your windows settings."
                 Header="Theme"
                 IsExpanded="False">
@@ -55,6 +56,7 @@
 
             <labs:SettingsExpander
                 Grid.Row="1"
+                Margin="{StaticResource MediumBottomMargin}"
                 Description="Contains a few settings for interacting with the license behavior of autodesk products."
                 Header="License modifier settings"
                 IsExpanded="True">
