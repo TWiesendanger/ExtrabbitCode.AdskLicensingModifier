@@ -6,29 +6,27 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using AdskLicensingModifier.Contracts.Services;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+// ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
 
 public partial class ModifyLicensingViewModel : ObservableObject
 {
     private readonly IGenericMessageDialogService _messageDialogService;
-    public Task Initialization
-    {
-        get;
-    }
+    public Task Initialization { get; }
 
-    private const string LICENSE_HELPER_EXE =
+    private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
     [ObservableProperty] private string? searchText;
     [ObservableProperty] private bool resultAskRun;
-    [ObservableProperty] private bool wasRunCommandSuccessfull;
+    [ObservableProperty] private bool wasRunCommandSuccessful;
     [ObservableProperty] private string result = "";
     [ObservableProperty] private string? serverNames;
     [ObservableProperty] private LicenseType selectedLicenseType = LicenseType.Reset;
     [ObservableProperty] private ServerType selectedServerType;
     [ObservableProperty] private List<ServerType>? serverTypes;
     [ObservableProperty] private List<LicenseType>? licenseTypes;
-    [ObservableProperty] private bool uiIsenabled;
+    [ObservableProperty] private bool uiIsEnabled;
     [ObservableProperty] private bool commandDialogBarOpen;
     [ObservableProperty] private bool serverTypeIsEnabled;
     [ObservableProperty] private Dictionary<string, string>? adskProducts;
@@ -93,6 +91,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             "2023" => "2023.0.0.F",
             "2024" => "2024.0.0.F",
             "2025" => "2025.0.0.F",
+            "2026" => "2026.0.0.F",
             _ => ""
         };
 
@@ -110,20 +109,20 @@ public partial class ModifyLicensingViewModel : ObservableObject
     private async Task CheckPathAsync()
     {
 
-        if (File.Exists(LICENSE_HELPER_EXE) == false)
+        if (File.Exists(LicenseHelperExe) == false)
         {
             var dialogSettings = new DialogSettings()
             {
                 Title = "AdskLicensingInstHelper not found",
-                Message = $"AdskLicensingInstHelper was not found. This exe is needed to be able to change any license settings for autodesk products. Make sure you have the autodesk licensing service installed. ",
+                Message = "AdskLicensingInstHelper was not found. This exe is needed to be able to change any license settings for autodesk products. Make sure you have the autodesk licensing service installed. ",
                 Color = Color.FromArgb(255, 234, 93, 97),
                 Symbol = ((char)0xEA39).ToString(),
             };
-            UiIsenabled = false;
+            UiIsEnabled = false;
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
         }
-        UiIsenabled = true;
+        UiIsEnabled = true;
     }
 
     partial void OnSearchTextChanged(string? value)
@@ -164,7 +163,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             var dialogSettings = new DialogSettings()
             {
                 Title = "No product selected",
-                Message = $"No product was selected. Make sure you have selected one product. ",
+                Message = "No product was selected. Make sure you have selected one product. ",
                 Color = Color.FromArgb(255, 234, 93, 97),
                 Symbol = ((char)0xEA39).ToString(),
             };
@@ -185,11 +184,11 @@ public partial class ModifyLicensingViewModel : ObservableObject
         var cmdCommand = SelectedLicenseType switch
         {
             LicenseType.Network =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
             LicenseType.Standalone or LicenseType.User =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
             LicenseType.Reset =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
             _ => ""
         };
         return cmdCommand;
@@ -203,7 +202,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             var dialogSettings = new DialogSettings()
             {
                 Title = "No product selected",
-                Message = $"No product was selected. Make sure you have selected one product. ",
+                Message = "No product was selected. Make sure you have selected one product. ",
                 Color = Color.FromArgb(255, 234, 93, 97),
                 Symbol = ((char)0xEA39).ToString(),
             };
@@ -214,7 +213,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
         var dialogSettingsConfirmation = new DialogSettings()
         {
             Title = "Are you sure?",
-            Message = $"Are you sure that you want to run the command locally? ",
+            Message = "Are you sure that you want to run the command locally? ",
             PrimaryButtonText = "Yes",
             PrimaryButtonCommand = SetAskRunResultCommand,
             SecondaryButtonText = "No",
@@ -250,7 +249,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
         {
             var keyName = @"Software";
             using var key = Registry.CurrentUser.OpenSubKey(keyName, true);
-            var keyNames = key?.GetSubKeyNames();
+            key?.GetSubKeyNames();
             try
             {
                 key?.DeleteSubKeyTree("FLEXlm License Manager");
@@ -271,9 +270,6 @@ public partial class ModifyLicensingViewModel : ObservableObject
         process.StartInfo.RedirectStandardError = true;
 
         process.Start();
-        //var output = process.StandardOutput.ReadToEnd();
-        //var errorOutput = process.StandardError.ReadToEnd();
-        //process.WaitForExit();
 
         if (SelectedLicenseType == LicenseType.Reset)
         {
@@ -282,16 +278,16 @@ public partial class ModifyLicensingViewModel : ObservableObject
         }
         else
         {
-            WasRunCommandSuccessfull = true;
+            WasRunCommandSuccessful = true;
         }
 
-        if (WasRunCommandSuccessfull)
+        if (WasRunCommandSuccessful)
         {
             CommandDialogBarOpen = true;
         }
 
         ResultAskRun = false;
-        WasRunCommandSuccessfull = false;
+        WasRunCommandSuccessful = false;
         await Task.CompletedTask;
     }
 
@@ -316,16 +312,16 @@ public partial class ModifyLicensingViewModel : ObservableObject
                 var newFilePath = Path.Combine(Path.GetDirectoryName(idServiceDbFile) ?? string.Empty, newFileName);
 
                 File.Move(idServiceDbFile, newFilePath);
-                WasRunCommandSuccessfull = true;
+                WasRunCommandSuccessful = true;
             }
             catch (IOException)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "File in use or access denied",
                     Message =
-                        $"idservices.db could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
+                        "idservices.db could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
 
                     Color = Color.FromArgb(255, 234, 93, 97),
@@ -335,7 +331,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "Error",
@@ -361,16 +357,16 @@ public partial class ModifyLicensingViewModel : ObservableObject
                 var newFileName = $"LoginState.xml_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}";
                 var newFilePath = Path.Combine(Path.GetDirectoryName(loginStateFile) ?? string.Empty, newFileName);
                 File.Move(loginStateFile, newFilePath);
-                WasRunCommandSuccessfull = true;
+                WasRunCommandSuccessful = true;
             }
             catch (IOException)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "File in use or access denied",
                     Message =
-                        $"LoginState.xml could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
+                        "LoginState.xml could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
                     Color = Color.FromArgb(255, 234, 93, 97),
                     Symbol = ((char)0xEA39).ToString(),
@@ -379,7 +375,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "Error",
@@ -395,11 +391,11 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
     public void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var producListView = (ListView)sender;
-        if (producListView.SelectedItem is null)
+        var productListView = (ListView)sender;
+        if (productListView.SelectedItem is null)
         {
             return;
         }
-        SelectedProduct = (KeyValuePair<string, string>)producListView.SelectedItem;
+        SelectedProduct = (KeyValuePair<string, string>)productListView.SelectedItem;
     }
 }

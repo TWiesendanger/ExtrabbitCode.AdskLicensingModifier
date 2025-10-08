@@ -7,8 +7,6 @@
       xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
       mc:Ignorable="d">
     <Page.Resources>
-        <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor"
-                         Color="Transparent" />
     </Page.Resources>
     <Grid Margin="15,0,0,20">
         <Grid.ColumnDefinitions>
