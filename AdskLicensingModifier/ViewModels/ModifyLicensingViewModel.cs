@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
 using AdskLicensingModifier.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -32,8 +32,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [ObservableProperty] private Dictionary<string, string>? filteredAdskProducts;
     private Dictionary<string, string>? _filteredYearAdskProducts;
     [ObservableProperty] private KeyValuePair<string, string> selectedProduct;
-    [ObservableProperty] private string selectedYear = "2025";
-    private string _productFeatureCode = "2025.0.0.F";
+    [ObservableProperty] private string selectedYear = "2026";
+    private string _productFeatureCode = "2026.0.0.F";
 
     public ModifyLicensingViewModel(IGenericMessageDialogService messageDialogService)
     {

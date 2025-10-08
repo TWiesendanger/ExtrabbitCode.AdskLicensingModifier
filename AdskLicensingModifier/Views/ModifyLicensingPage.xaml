@@ -1,4 +1,4 @@
-<Page
+﻿<Page
     x:Class="AdskLicensingModifier.Views.ModifyLicensingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -64,6 +64,7 @@
                 <ComboBoxItem Content="2023" />
                 <ComboBoxItem Content="2024" />
                 <ComboBoxItem Content="2025" />
+                <ComboBoxItem Content="2026" />
             </ComboBox>
         </Grid>
         <TextBlock
@@ -176,7 +177,7 @@
                 Command="{x:Bind ViewModel.RunCommand}"
                 Content="Run"
                 FontSize="14"
-                IsEnabled="{x:Bind ViewModel.UiIsenabled, Mode=OneWay}"
+                IsEnabled="{x:Bind ViewModel.UiIsEnabled, Mode=OneWay}"
                 ToolTipService.ToolTip="Will run the command on the active system. Command is not regenerated if there is already text in it." />
         </Grid>
 

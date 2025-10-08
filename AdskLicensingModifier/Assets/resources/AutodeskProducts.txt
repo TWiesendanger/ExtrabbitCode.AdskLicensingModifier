@@ -799,3 +799,139 @@ PowerShape Standard 2025;P09Q1
 PowerShape Ultimate 2025;Q11Q1
 T1 Enterprise Multi-flex 2025;535Q1
 Autodesk Inventor Nesting 2025;C1QQ1
+Autodesk 3ds Max 2026;128R1
+Autodesk 3ds Max 2026 with Softimage;978R1
+Autodesk Advance Steel 2026;959R1
+Autodesk Alias AutoStudio 2026;966R1
+Autodesk Alias Concept 2026;A63R1
+Autodesk Alias Design 2026;712R1
+Autodesk Alias SpeedForm 2026;A62R1
+Autodesk Alias Surface 2026;736R1
+Autodesk AutoCAD 2026;001R1
+Autodesk AutoCAD Architecture 2026;185R1
+Autodesk AutoCAD Design Suite Premium 2026;768R1
+Autodesk AutoCAD Design Suite Standard 2026;767R1
+Autodesk AutoCAD Electrical 2026;225R1
+Autodesk AutoCAD Inventor LT Suite 2026;596R1
+Autodesk AutoCAD LT 2026;057R1
+Autodesk AutoCAD LT Civil Suite 2026;545R1
+Autodesk AutoCAD Map 3D 2026;129R1
+Autodesk AutoCAD Mechanical 2026;206R1
+Autodesk AutoCAD MEP 2026;235R1
+Autodesk AutoCAD Plant 3D 2026;426R1
+Autodesk AutoCAD Raster Design 2026;340R1
+Autodesk AutoCAD Revit LT Suite 2026;834R1
+Autodesk Building Design Suite Premium 2026;765R1
+Autodesk Building Design Suite Standard 2026;784R1
+Autodesk Building Design Suite Ultimate 2026;766R1
+Autodesk Burn 2026;C0YR1
+Autodesk CFD Design Study Environment 2026;812R1
+Autodesk CFD Premium 2026;810R1
+Autodesk CFD Ultimate 2026;811R1
+Autodesk Civil 3D 2026;237R1
+Autodesk Fabrication CADmep 2026;839R1
+Autodesk Fabrication CAMduct 2026;842R1
+Autodesk Fabrication ESTmep 2026;841R1
+Autodesk Factory Design Suite Premium 2026;757R1
+Autodesk Factory Design Suite Standard 2026;789R1
+Autodesk Factory Design Suite Ultimate 2026;760R1
+Autodesk Factory Design Utilities 2026;P03R1
+Autodesk FeatureCAM Premium 2026;A9FR1
+Autodesk FeatureCAM Standard 2026;A9GR1
+Autodesk FeatureCAM Ultimate 2026;A9ER1
+Autodesk Flame 2026;C0TR1
+Autodesk Flame 2026 – Education;C14R1
+Autodesk Flame Assist 2026;C0VR1
+Autodesk Flame Premium 2026;C0XR1
+Autodesk Flare 2026;C0WR1
+Autodesk Helius PFA 2026;899R1
+Autodesk HSM Premium 2026;C12R1
+Autodesk HSM Ultimate 2026;C13R1
+Autodesk Infrastructure Design Suite Premium 2026;786R1
+Autodesk Infrastructure Design Suite Standard 2026;787R1
+Autodesk Infrastructure Design Suite Ultimate 2026;785R1
+Autodesk Inventor 2026;208R1
+Autodesk Inventor Engineer-to-Order 2026 – Developer;A66R1
+Autodesk Inventor Engineer-to-Order 2026 – Distribution;996R1
+Autodesk Inventor Engineer-to-Order 2026 – Server;997R1
+Autodesk Inventor Engineer-to-Order Series 2026;805R1
+Autodesk Inventor Engineer-to-Order Server 2026;752R1
+Autodesk Inventor HSM Premium 2026;969R1
+Autodesk Inventor HSM Ultimate 2026;970R1
+Autodesk Inventor LT 2026;529R1
+Autodesk Inventor OEM 2026;798R1
+Autodesk Inventor Professional 2026;797R1
+Autodesk Lustre 2026;C0UR1
+Autodesk Lustre Burn 2026;C10R1
+Autodesk Lustre ShotReactor 2026;C11R1
+Autodesk Manufacturing Automation Utility 2026;A9YR1
+Autodesk Manufacturing Data Exchange Utility Premium 2026;A9VR1
+Autodesk Manufacturing Data Exchange Utility Standard 2026;A9XR1
+Autodesk Manufacturing Post Processor Utility 2026;A9TR1
+Autodesk MEP Fabrication Suite 2026;00QR1
+Autodesk Moldflow Adviser Premium 2026;571R1
+Autodesk Moldflow Adviser Ultimate 2026;572R1
+Autodesk Moldflow Design 2026;837R1
+Autodesk Moldflow Insight Premium 2026;574R1
+Autodesk Moldflow Insight Standard 2026;573R1
+Autodesk Moldflow Insight Ultimate 2026;575R1
+Autodesk Moldflow Synergy 2026;579R1
+Autodesk Nastran 2026;986R1
+Autodesk Nastran In-CAD 2026;987R1
+Autodesk Navisworks Manage 2026;507R1
+Autodesk Navisworks Simulate 2026;506R1
+Autodesk PartMaker 2026;A9SR1
+Autodesk Plant Design Suite Premium 2026;763R1
+Autodesk Plant Design Suite Standard 2026;788R1
+Autodesk Plant Design Suite Ultimate 2026;764R1
+Autodesk Point Layout 2026;925R1
+Autodesk PowerInspect Premium 2026;A9JR1
+Autodesk PowerInspect Ultimate 2026;A9HR1
+Autodesk PowerMill Modeling 2026;A9UR1
+Autodesk PowerMill Premium 2026;A9AR1
+Autodesk PowerMill Standard 2026;A9QR1
+Autodesk PowerMill Ultimate 2026;A9PR1
+Autodesk PowerShape Premium 2026;A9MR1
+Autodesk PowerShape Standard 2026;A9NR1
+Autodesk PowerShape Ultimate 2026;A9LR1
+Autodesk ReCap Pro 2026;919R1
+Autodesk Revit 2026;829R1
+Autodesk Revit LT 2026;828R1
+Autodesk Robot Structural Analysis Professional 2026;547R1
+Autodesk SketchBook for  2026;871R1
+Autodesk TruComp 2026;00ER1
+Autodesk TruFiber 2026;01WR1
+Autodesk TruLaser 2026;00DR1
+Autodesk TruNest 2026 – Nesting Engine;00FR1
+Autodesk TruNest Composites 2026;00BR1
+Autodesk TruNest Contour 2026;00AR1
+Autodesk TruNest Multi-Tool 2026;00CR1
+Autodesk TruPlan 2026;01VR1
+Autodesk Vault Office 2026;555R1
+Autodesk Vault Professional 2026;569R1
+Autodesk Vault Workgroup 2026;559R1
+Autodesk Vehicle Tracking 2026;955R1
+Autodesk VRED 2026;884R1
+Autodesk VRED Design 2026;885R1
+Autodesk VRED Presenter 2026;888R1
+Autodesk VRED Professional 2026;886R1
+Autodesk VRED Render Node – consumption-based license 2026;A93R1
+Autodesk VRED Render Node 2026;890R1
+Autodesk VRED Server 2026;887R1
+Autodesk Wiretap Gateway 2026;C0ZR1
+FeatureCAM Premium 2026;Q16R1
+FeatureCAM Standard 2026;Q15R1
+FeatureCAM Ultimate 2026;Q17R1
+HSMWorks Premium 2026;873R1
+HSMWorks Ultimate 2026;872R1
+PowerInspect Premium 2026;Q13R1
+PowerInspect Standard 2026;Q12R1
+PowerInspect Ultimate 2026;Q14R1
+PowerMill Premium 2026;P07R1
+PowerMill Standard 2026;A9ZR1
+PowerMill Ultimate 2026;P08R1
+PowerShape Premium 2026;Q10R1
+PowerShape Standard 2026;P09R1
+PowerShape Ultimate 2026;Q11R1
+T1 Enterprise Multi-flex 2026;535R1
+Autodesk Inventor Nesting 2026;C1QR1
