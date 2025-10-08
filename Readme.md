@@ -3,6 +3,7 @@
 ![Logo](AdskLicensingModifier/Assets/AppMainLogo.png)
 
 - [Adsk License Modifier](#adsk-license-modifier)
+  - [Version 1.2.0.0](#version-1200)
   - [Predecessor of ADSKLincensingModify](#predecessor-of-adsklincensingmodify)
   - [Start](#start)
   - [Settings](#settings)
@@ -45,6 +46,18 @@ Adsk License Modifier is a GUI for this exe and makes this task easy.
 > **Note**
 > If you want to check out the manual way by autodesk, feel free to use this link: [Autodesk Knowledge](https://knowledge.autodesk.com/search-result/caas/sfdcarticles/sfdcarticles/How-to-change-or-reset-licensing-on-your-Autodesk-software.html)
 
+## Version 1.2.0.0
+
+Features:
+- Supports Autodesk 2020 - 2026 products
+- Some performance improvements
+- Some gui improvements
+- Dotnet 9.0 and WindowsAppSDK 1.8
+
+Bugfixes:
+- Fixed a bug where sometimes a crash occurent while opening a folder
+- Fixed some visual bugs
+
 ## Predecessor of ADSKLincensingModify
 
 This tool is the predecessor of the powershell version found in this [repository](https://github.com/TWiesendanger/ADSKLincensingModify).
@@ -59,7 +72,7 @@ You can check the path for yourself.
 `C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper`
 
 > **Note**
-> This exe isn't delivered by this tool. You get it by installing any Autodesk 2020 product. It also get's updated from time to time, which makes it difficult to ship.
+> This exe isn't delivered by this tool. You get it by installing any Autodesk 2020 or higher product. It also get's updated from time to time, which makes it difficult to ship.
 
 ## Settings
 
@@ -189,7 +202,7 @@ There is a second tab that allows to search for Product Key or Product Name. The
 
 MIT License
 
-Copyright (c) 2023 Tobias Wiesendanger
+Copyright (c) 2025 Tobias Wiesendanger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

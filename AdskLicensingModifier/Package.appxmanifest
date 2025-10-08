@@ -13,7 +13,7 @@
   <Identity
     Name="47303ExtrabbitCode.AdskLicensingModifier"
     Publisher="CN=6919375C-C5CB-4D90-8974-B386A29EB30E"
-    Version="1.1.0.0" />
+    Version="1.2.0.0" />
     
   <mp:PhoneIdentity PhoneProductId="9acbb9a4-63c3-451c-a365-f4f307a97833" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
