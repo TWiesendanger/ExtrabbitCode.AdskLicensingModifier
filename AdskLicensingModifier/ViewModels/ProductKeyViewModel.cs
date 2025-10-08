@@ -5,9 +5,9 @@ namespace AdskLicensingModifier.ViewModels;
 
 public partial class ProductKeyViewModel : ObservableObject
 {
-    [ObservableProperty] private string? searchText;
-    [ObservableProperty] private Dictionary<string, string>? adskProducts;
-    [ObservableProperty] private Dictionary<string, string>? filteredProducts;
+    [ObservableProperty] public partial string? SearchText { get; set; }
+    [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; }
+    [ObservableProperty] public partial Dictionary<string, string>? FilteredProducts { get; set; }
 
 
     public Task Initialization { get; }
@@ -35,7 +35,7 @@ public partial class ProductKeyViewModel : ObservableObject
         }
     }
 
-    public async Task<Dictionary<string, string>> ReadProductKeysAsync()
+    public static async Task<Dictionary<string, string>> ReadProductKeysAsync()
     {
         var uri2015 = new Uri("ms-appx:///Assets/resources/ProductKeys2015.txt");
         var uri2016 = new Uri("ms-appx:///Assets/resources/ProductKeys2016.txt");

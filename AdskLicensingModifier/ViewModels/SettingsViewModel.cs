@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.UI;
+
 // ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
@@ -17,22 +17,13 @@ namespace AdskLicensingModifier.ViewModels;
 public partial class SettingsViewModel : ObservableObject
 {
     private readonly IGenericMessageDialogService _messageDialogService;
-    private ElementTheme _elementTheme;
-    [ObservableProperty] private bool uiIsEnabled;
-    [ObservableProperty] private bool desktopServiceIsOn;
-    private string _versionDescription;
+    [ObservableProperty] public partial bool UiIsEnabled { get; set; }
+    [ObservableProperty] public partial bool DesktopServiceIsOn { get; set; }
+    [ObservableProperty] public partial ElementTheme ElementTheme { get; set; }
+    [ObservableProperty] public partial string VersionDescription { get; set; }
+
     private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
-
-    public ElementTheme ElementTheme {
-        get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
-    }
-
-    public string VersionDescription {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
-    }
 
     public ICommand SwitchThemeCommand { get; }
 
@@ -40,8 +31,8 @@ public partial class SettingsViewModel : ObservableObject
     {
         var themeSelectorService1 = themeSelectorService;
         _messageDialogService = messageDialogService;
-        _elementTheme = themeSelectorService1.Theme;
-        _versionDescription = GetVersionDescription();
+        ElementTheme = themeSelectorService1.Theme;
+        VersionDescription = GetVersionDescription();
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async void (param) =>
@@ -146,7 +137,7 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OpenLicenseOutput()
+    private static void OpenLicenseOutput()
     {
         Process.Start("notepad.exe", Path.Combine(Path.GetTempPath(), "AdskLicenseOutput.json"));
     }
@@ -228,7 +219,7 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void OpenAdskLicensingInstHelperPath()
+    private async Task OpenAdskLicensingInstHelperPath()
     {
         const string path = @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper";
         var folder = await StorageFolder.GetFolderFromPathAsync(path);

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
 using AdskLicensingModifier.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,23 +17,24 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
     private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
-    [ObservableProperty] private string? searchText;
-    [ObservableProperty] private bool resultAskRun;
-    [ObservableProperty] private bool wasRunCommandSuccessful;
-    [ObservableProperty] private string result = "";
-    [ObservableProperty] private string? serverNames;
-    [ObservableProperty] private LicenseType selectedLicenseType = LicenseType.Reset;
-    [ObservableProperty] private ServerType selectedServerType;
-    [ObservableProperty] private List<ServerType>? serverTypes;
-    [ObservableProperty] private List<LicenseType>? licenseTypes;
-    [ObservableProperty] private bool uiIsEnabled;
-    [ObservableProperty] private bool commandDialogBarOpen;
-    [ObservableProperty] private bool serverTypeIsEnabled;
-    [ObservableProperty] private Dictionary<string, string>? adskProducts;
-    [ObservableProperty] private Dictionary<string, string>? filteredAdskProducts;
-    private Dictionary<string, string>? _filteredYearAdskProducts;
-    [ObservableProperty] private KeyValuePair<string, string> selectedProduct;
-    [ObservableProperty] private string selectedYear = "2026";
+    [ObservableProperty] public partial string? SearchText { get; set;}
+    [ObservableProperty] public partial bool ResultAskRun { get; set; }
+    [ObservableProperty] public partial bool WasRunCommandSuccessful { get; set; }
+    [ObservableProperty] public partial string Result { get; set; } = "";
+    [ObservableProperty] public partial string? ServerNames { get; set; }
+    [ObservableProperty] public partial LicenseType SelectedLicenseType { get; set; } = LicenseType.Reset;
+    [ObservableProperty] public partial ServerType SelectedServerType { get; set; }
+    [ObservableProperty] public partial List<ServerType>? ServerTypes { get; set; }
+    [ObservableProperty] public partial List<LicenseType>? LicenseTypes { get; set; }
+    [ObservableProperty] public partial bool UiIsEnabled { get; set; }
+    [ObservableProperty] public partial bool CommandDialogBarOpen { get; set; }
+    [ObservableProperty] public partial bool ServerTypeIsEnabled { get; set; }
+    [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; } = [];
+    [ObservableProperty]
+    public ObservableCollection<KeyValuePair<string, string>>? FilteredAdskProducts { get; set; } = [];
+    public Dictionary<string, string>? FilteredYearAdskProducts { get; set; }
+    [ObservableProperty] public partial KeyValuePair<string, string> SelectedProduct { get; set; }
+    [ObservableProperty] public partial string SelectedYear { get; set; } = "2026";
     private string _productFeatureCode = "2026.0.0.F";
 
     public ModifyLicensingViewModel(IGenericMessageDialogService messageDialogService)
@@ -44,24 +46,36 @@ public partial class ModifyLicensingViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         AdskProducts = await ReadAutodeskProductsAsync();
-        FilteredAdskProducts = [];
-        _filteredYearAdskProducts = [];
+        FilteredAdskProducts ??= new ObservableCollection<KeyValuePair<string, string>>();
+
         if (AdskProducts != null)
         {
-            _filteredYearAdskProducts = string.IsNullOrEmpty(SelectedYear)
+            FilteredYearAdskProducts = string.IsNullOrEmpty(SelectedYear)
                 ? AdskProducts
                 : AdskProducts.Where(x => x.Key.Contains(SelectedYear, StringComparison.OrdinalIgnoreCase))
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        FilteredAdskProducts = _filteredYearAdskProducts;
+        UpdateFilteredProductsCollection();
 
         ServerTypes = [..Enum.GetValues(typeof(ServerType)).Cast<ServerType>()];
         LicenseTypes = [..Enum.GetValues(typeof(LicenseType)).Cast<LicenseType>()];
 
         await CheckPathAsync();
         SetFeatureCode(SelectedYear);
+    }
 
+    private void UpdateFilteredProductsCollection()
+    {
+        FilteredAdskProducts?.Clear();
+
+        if (FilteredYearAdskProducts != null)
+        {
+            foreach (var item in FilteredYearAdskProducts)
+            {
+                FilteredAdskProducts?.Add(item);
+            }
+        }
     }
 
     partial void OnSelectedYearChanged(string value)
@@ -69,13 +83,13 @@ public partial class ModifyLicensingViewModel : ObservableObject
         SelectedProduct = new KeyValuePair<string, string>();
         if (AdskProducts != null)
         {
-            _filteredYearAdskProducts = string.IsNullOrEmpty(value)
+            FilteredYearAdskProducts = string.IsNullOrEmpty(value)
                 ? AdskProducts
                 : AdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        FilteredAdskProducts = _filteredYearAdskProducts;
+        UpdateFilteredProductsCollection();
 
         SetFeatureCode(value);
         SearchText = "";
@@ -128,12 +142,18 @@ public partial class ModifyLicensingViewModel : ObservableObject
     {
         SelectedProduct = new KeyValuePair<string, string>();
 
-        if (_filteredYearAdskProducts != null)
+        if (FilteredYearAdskProducts != null)
         {
-            FilteredAdskProducts = string.IsNullOrEmpty(value)
-                ? _filteredYearAdskProducts
-                : _filteredYearAdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
+            var filtered = string.IsNullOrEmpty(value)
+                ? FilteredYearAdskProducts
+                : FilteredYearAdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            FilteredAdskProducts?.Clear();
+            foreach (var item in filtered)
+            {
+                FilteredAdskProducts?.Add(item);
+            }
         }
     }
 
