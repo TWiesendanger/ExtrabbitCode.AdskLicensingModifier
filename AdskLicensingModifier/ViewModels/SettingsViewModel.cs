@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Windows.Input;
@@ -105,8 +105,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Command copied",
             Message = "Print list command was copied. Use it in a terminal window. ",
-            Color = Color.FromArgb(255, 160, 209, 77),
-            Symbol = ((char)0xE73E).ToString(),
+            Color = ResourceHelper.GetColor("Success"),
+            Symbol = ResourceHelper.GetString("SuccessSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -136,8 +136,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Export successful",
             Message = $"Export was successful. Do you want to open the file from {Path.Combine(Path.GetTempPath(), "AdskLicenseOutput.json")} ?",
-            Color = Color.FromArgb(255, 160, 209, 77),
-            Symbol = ((char)0xE73E).ToString(),
+            Color = ResourceHelper.GetColor("Success"),
+            Symbol = ResourceHelper.GetString("SuccessSymbol"),
             PrimaryButtonIsEnabled = true,
             PrimaryButtonCommand = OpenLicenseOutputCommand,
             PrimaryButtonText = "Yes",
@@ -172,8 +172,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -196,8 +196,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -223,8 +223,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -247,8 +247,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
     }
@@ -266,8 +266,8 @@ public partial class SettingsViewModel : ObservableObject
             {
                 Title = "Service not found",
                 Message = "Service AdskLicensingService was not found. You will be only able to generate commands, but not running them. Some Options are deactivated.",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
             UiIsEnabled = false;

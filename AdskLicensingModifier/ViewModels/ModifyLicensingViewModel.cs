@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI;
 using AdskLicensingModifier.Helpers;
@@ -115,8 +115,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
             {
                 Title = "AdskLicensingInstHelper not found",
                 Message = "AdskLicensingInstHelper was not found. This exe is needed to be able to change any license settings for autodesk products. Make sure you have the autodesk licensing service installed. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             UiIsEnabled = false;
             await _messageDialogService.ShowDialog(dialogSettings);
@@ -164,8 +164,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
             {
                 Title = "No product selected",
                 Message = "No product was selected. Make sure you have selected one product. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
@@ -203,8 +203,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
             {
                 Title = "No product selected",
                 Message = "No product was selected. Make sure you have selected one product. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
@@ -217,8 +217,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
             PrimaryButtonText = "Yes",
             PrimaryButtonCommand = SetAskRunResultCommand,
             SecondaryButtonText = "No",
-            Color = Color.FromArgb(94, 126, 191, 239),
-            Symbol = ((char)0xF142).ToString(),
+            Color = ResourceHelper.GetColor("Information"),
+            Symbol = ResourceHelper.GetString("QuestionMarkSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
 
@@ -323,9 +323,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
                     Message =
                         "idservices.db could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
-
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
@@ -337,8 +336,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
                     Title = "Error",
                     Message = $"There was an error while running a command. The error was: {ex}.",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
@@ -368,8 +367,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
                     Message =
                         "LoginState.xml could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
@@ -381,8 +380,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
                     Title = "Error",
                     Message = $"There was an error while running a command. The error was: {ex}.",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }

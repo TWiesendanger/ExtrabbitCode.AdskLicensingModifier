@@ -46,6 +46,8 @@
 		<Content Include="Assets\resources\ProductKeys2025.txt" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove="Styles\Color.xaml" />
+		<None Remove="Styles\Strings.xaml" />
 		<None Remove="Views\MainPage.xaml" />
 		<None Remove="Views\MessageDialog.xaml" />
 		<None Remove="Views\ProductKeyPage.xaml" />
@@ -74,6 +76,12 @@
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Styles\Strings.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Styles\Color.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Views\ProductKeyPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>

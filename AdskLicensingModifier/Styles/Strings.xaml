@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:String x:Key="ErrorSymbol">&#xEA39;</x:String>
+    <x:String x:Key="SuccessSymbol">&#xE930;</x:String>
+    <x:String x:Key="CheckMarkSymbol">&#xE73E;</x:String>
+    <x:String x:Key="QuestionMarkSymbol">&#xF142;</x:String>
+    <x:String x:Key="OpenInNewWindow">&#xE8A7;</x:String>
+    <x:String x:Key="AdminSymbol">&#xE7EF;</x:String>
+    <x:String x:Key="OutlinedStarGlyph">&#xE734;</x:String>
+    <x:String x:Key="FilledStarGlyph">&#xE735;</x:String>
+    <x:String x:Key="PathSymbol">&#xE62F;</x:String>
+    <x:String x:Key="CreateFolderSymbol">&#xE8F4;</x:String>
+    <x:String x:Key="FolderSymbol">&#xE838;</x:String>
+</ResourceDictionary>
