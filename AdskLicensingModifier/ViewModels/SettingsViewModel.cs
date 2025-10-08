@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Input;
 using System.ServiceProcess;
@@ -167,9 +167,10 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Web Services";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
             return;
         }
 
@@ -191,7 +192,9 @@ public partial class SettingsViewModel : ObservableObject
         const string path = @"C:\ProgramData\Autodesk\AdskLicensingService";
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
+            await Launcher.LaunchFolderAsync(folder);
+
             return;
         }
 
@@ -213,9 +216,12 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Identity Services";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
+
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
+
             return;
         }
 
@@ -235,9 +241,11 @@ public partial class SettingsViewModel : ObservableObject
     private async void OpenAdskLicensingInstHelperPath()
     {
         const string path = @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
+
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
             return;
         }
 
