@@ -31,7 +31,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [ObservableProperty] public partial bool ServerTypeIsEnabled { get; set; }
     [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; } = [];
     [ObservableProperty]
-    public ObservableCollection<KeyValuePair<string, string>>? FilteredAdskProducts { get; set; } = [];
+    public partial ObservableCollection<KeyValuePair<string, string>>? FilteredAdskProducts { get; set; } = [];
     public Dictionary<string, string>? FilteredYearAdskProducts { get; set; }
     [ObservableProperty] public partial KeyValuePair<string, string> SelectedProduct { get; set; }
     [ObservableProperty] public partial string SelectedYear { get; set; } = "2026";
@@ -46,7 +46,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         AdskProducts = await ReadAutodeskProductsAsync();
-        FilteredAdskProducts ??= new ObservableCollection<KeyValuePair<string, string>>();
+        FilteredAdskProducts ??= [];
 
         if (AdskProducts != null)
         {
@@ -57,9 +57,6 @@ public partial class ModifyLicensingViewModel : ObservableObject
         }
 
         UpdateFilteredProductsCollection();
-
-        ServerTypes = [..Enum.GetValues(typeof(ServerType)).Cast<ServerType>()];
-        LicenseTypes = [..Enum.GetValues(typeof(LicenseType)).Cast<LicenseType>()];
 
         await CheckPathAsync();
         SetFeatureCode(SelectedYear);
@@ -407,7 +404,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
         }
     }
 
-    public void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    public void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs _)
     {
         var productListView = (ListView)sender;
         if (productListView.SelectedItem is null)
