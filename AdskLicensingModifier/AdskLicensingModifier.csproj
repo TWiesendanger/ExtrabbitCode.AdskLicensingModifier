@@ -10,6 +10,7 @@
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
