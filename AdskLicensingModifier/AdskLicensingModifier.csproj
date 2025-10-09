@@ -13,6 +13,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
+		<PublishAot>false</PublishAot>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<SelfContained>true</SelfContained>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
@@ -43,6 +44,7 @@
 		<Content Include="Assets\resources\ProductKeys2023.txt" />
 		<Content Include="Assets\resources\ProductKeys2024.txt" />
 		<Content Include="Assets\resources\ProductKeys2025.txt" />
+		<Content Include="Assets\resources\ProductKeys2026.txt" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Styles\Strings.xaml" />
@@ -56,10 +58,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
-		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
+		<PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.250402" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
@@ -90,7 +94,7 @@
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
-
+	
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
