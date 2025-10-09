@@ -5,9 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enums="using:AdskLicensingModifier.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:models="using:AdskLicensingModifier.Models"
+    xmlns:winUi="using:CommunityToolkit.WinUI"
     Width="1000"
     mc:Ignorable="d">
+    <Page.Resources>
+        <enums:YearEnumToTextConverter x:Key="YearEnumToTextConverter" />
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -58,15 +62,13 @@
                 Margin="0,0,50,0"
                 VerticalAlignment="Bottom"
                 FontSize="14"
-                SelectedValue="{x:Bind ViewModel.SelectedYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedValuePath="Content">
-                <ComboBoxItem Content="2020" />
-                <ComboBoxItem Content="2021" />
-                <ComboBoxItem Content="2022" />
-                <ComboBoxItem Content="2023" />
-                <ComboBoxItem Content="2024" />
-                <ComboBoxItem Content="2025" />
-                <ComboBoxItem Content="2026" />
+                ItemsSource="{winUi:EnumValues Type=models:AdskYearEnum}"
+                SelectedItem="{x:Bind ViewModel.SelectedYear, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="models:AdskYearEnum">
+                        <TextBlock Text="{x:Bind Converter={StaticResource YearEnumToTextConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </Grid>
         <TextBlock
@@ -87,12 +89,11 @@
             ItemsSource="{x:Bind ViewModel.FilteredAdskProducts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=OneWay}"
-            SelectionChanged="{x:Bind ViewModel.Selector_OnSelectionChanged}"
+            SelectedItem="{x:Bind ViewModel.SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Key}" />
+                <DataTemplate x:DataType="models:ProductKeyItem">
+                    <TextBlock Text="{x:Bind Product}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -109,7 +110,7 @@
             BorderBrush="{ThemeResource SystemAccentColor}"
             BorderThickness="1"
             CornerRadius="2"
-            ItemsSource="{ui:EnumValues Type=enums:LicenseType}"
+            ItemsSource="{winUi:EnumValues Type=enums:LicenseType}"
             SelectedItem="{x:Bind ViewModel.SelectedLicenseType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single" />
         <TextBlock
@@ -134,7 +135,7 @@
                 BorderThickness="1"
                 CornerRadius="2"
                 IsEnabled="{x:Bind ViewModel.ServerTypeIsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ItemsSource="{ui:EnumValues Type=enums:ServerType}"
+                ItemsSource="{winUi:EnumValues Type=enums:ServerType}"
                 SelectedItem="{x:Bind ViewModel.SelectedServerType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 SelectionMode="Single" />
             <TextBlock

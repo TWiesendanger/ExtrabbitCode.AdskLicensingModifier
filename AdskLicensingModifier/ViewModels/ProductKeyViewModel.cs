@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AdskLicensingModifier.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 // ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
@@ -6,8 +7,8 @@ namespace AdskLicensingModifier.ViewModels;
 public partial class ProductKeyViewModel : ObservableObject
 {
     [ObservableProperty] public partial string? SearchText { get; set; }
-    [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; }
-    [ObservableProperty] public partial Dictionary<string, string>? FilteredProducts { get; set; }
+    [ObservableProperty] public partial List<ProductKeyItem>? Products { get; set; }
+    [ObservableProperty] public partial List<ProductKeyItem>? FilteredProducts { get; set; }
 
 
     public Task Initialization { get; }
@@ -20,18 +21,19 @@ public partial class ProductKeyViewModel : ObservableObject
 
     public async Task InitializeAsync()
     {
-        AdskProducts = await ReadProductKeysAsync();
-        FilteredProducts = AdskProducts;
+        var dict = await ReadProductKeysAsync();
+        Products = dict.Select(kv => new ProductKeyItem(kv.Key, kv.Value)).ToList();
+        FilteredProducts = Products;
     }
 
     partial void OnSearchTextChanged(string? value)
     {
-        if (AdskProducts != null)
+        if (Products != null)
         {
-            FilteredProducts = string.IsNullOrEmpty(value)
-                ? AdskProducts
-                : AdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+            if (Products is null) return;
+            FilteredProducts = string.IsNullOrWhiteSpace(value)
+                ? Products
+                : Products.Where(x => x.Product.Contains(value, StringComparison.OrdinalIgnoreCase)).ToList();
         }
     }
 

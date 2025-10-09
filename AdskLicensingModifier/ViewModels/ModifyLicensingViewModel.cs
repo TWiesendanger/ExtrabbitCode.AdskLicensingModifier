@@ -4,6 +4,7 @@ using Windows.ApplicationModel.DataTransfer;
 using AdskLicensingModifier.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AdskLicensingModifier.Contracts.Services;
+using AdskLicensingModifier.Models;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 // ReSharper disable InconsistentNaming
@@ -17,7 +18,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
     private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
-    [ObservableProperty] public partial string? SearchText { get; set;}
+    [ObservableProperty] public partial string? SearchText { get; set; }
     [ObservableProperty] public partial bool ResultAskRun { get; set; }
     [ObservableProperty] public partial bool WasRunCommandSuccessful { get; set; }
     [ObservableProperty] public partial string Result { get; set; } = "";
@@ -30,11 +31,10 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [ObservableProperty] public partial bool CommandDialogBarOpen { get; set; }
     [ObservableProperty] public partial bool ServerTypeIsEnabled { get; set; }
     [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; } = [];
-    [ObservableProperty]
-    public partial ObservableCollection<KeyValuePair<string, string>>? FilteredAdskProducts { get; set; } = [];
+    [ObservableProperty] public partial ObservableCollection<ProductKeyItem>? FilteredAdskProducts { get; set; } = [];
     public Dictionary<string, string>? FilteredYearAdskProducts { get; set; }
-    [ObservableProperty] public partial KeyValuePair<string, string> SelectedProduct { get; set; }
-    [ObservableProperty] public partial string SelectedYear { get; set; } = "2026";
+    [ObservableProperty] public partial ProductKeyItem? SelectedProduct { get; set; }
+    [ObservableProperty] public partial AdskYearEnum SelectedYear { get; set; } = AdskYearEnum.Y2026;
     private string _productFeatureCode = "2026.0.0.F";
 
     public ModifyLicensingViewModel(IGenericMessageDialogService messageDialogService)
@@ -50,10 +50,10 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
         if (AdskProducts != null)
         {
-            FilteredYearAdskProducts = string.IsNullOrEmpty(SelectedYear)
-                ? AdskProducts
-                : AdskProducts.Where(x => x.Key.Contains(SelectedYear, StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+            var year = ((int)SelectedYear).ToString();
+            FilteredYearAdskProducts = AdskProducts
+                            .Where(x => x.Key.Contains(year, StringComparison.OrdinalIgnoreCase))
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         UpdateFilteredProductsCollection();
@@ -68,22 +68,22 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
         if (FilteredYearAdskProducts != null)
         {
-            foreach (var item in FilteredYearAdskProducts)
+            foreach (var kv in FilteredYearAdskProducts)
             {
-                FilteredAdskProducts?.Add(item);
+                FilteredAdskProducts?.Add(new ProductKeyItem(kv.Key, kv.Value));
             }
         }
     }
 
-    partial void OnSelectedYearChanged(string value)
+    partial void OnSelectedYearChanged(AdskYearEnum value)
     {
-        SelectedProduct = new KeyValuePair<string, string>();
+        SelectedProduct = null;
         if (AdskProducts != null)
         {
-            FilteredYearAdskProducts = string.IsNullOrEmpty(value)
-                ? AdskProducts
-                : AdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+            var year = ((int)value).ToString();
+            FilteredYearAdskProducts = AdskProducts
+                            .Where(x => x.Key.Contains(year, StringComparison.OrdinalIgnoreCase))
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         UpdateFilteredProductsCollection();
@@ -92,16 +92,16 @@ public partial class ModifyLicensingViewModel : ObservableObject
         SearchText = "";
     }
 
-    private void SetFeatureCode(string value) =>
-        _productFeatureCode = value switch
+    private void SetFeatureCode(AdskYearEnum year) =>
+        _productFeatureCode = ((int)year) switch
         {
-            "2020" => "2020.0.0.F",
-            "2021" => "2021.0.0.F",
-            "2022" => "2022.0.0.F",
-            "2023" => "2023.0.0.F",
-            "2024" => "2024.0.0.F",
-            "2025" => "2025.0.0.F",
-            "2026" => "2026.0.0.F",
+            2020 => "2020.0.0.F",
+            2021 => "2021.0.0.F",
+            2022 => "2022.0.0.F",
+            2023 => "2023.0.0.F",
+            2024 => "2024.0.0.F",
+            2025 => "2025.0.0.F",
+            2026 => "2026.0.0.F",
             _ => ""
         };
 
@@ -137,7 +137,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
 
     partial void OnSearchTextChanged(string? value)
     {
-        SelectedProduct = new KeyValuePair<string, string>();
+        SelectedProduct = null;
 
         if (FilteredYearAdskProducts != null)
         {
@@ -147,9 +147,9 @@ public partial class ModifyLicensingViewModel : ObservableObject
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             FilteredAdskProducts?.Clear();
-            foreach (var item in filtered)
+            foreach (var kv in filtered)
             {
-                FilteredAdskProducts?.Add(item);
+                FilteredAdskProducts?.Add(new ProductKeyItem(kv.Key, kv.Value));
             }
         }
     }
@@ -174,7 +174,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [RelayCommand]
     public async Task Generate()
     {
-        if (string.IsNullOrWhiteSpace(SelectedProduct.Key))
+        if (SelectedProduct is null || string.IsNullOrWhiteSpace(SelectedProduct.Key))
         {
             var dialogSettings = new DialogSettings()
             {
@@ -200,11 +200,11 @@ public partial class ModifyLicensingViewModel : ObservableObject
         var cmdCommand = SelectedLicenseType switch
         {
             LicenseType.Network =>
-                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
             LicenseType.Standalone or LicenseType.User =>
-                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
             LicenseType.Reset =>
-                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
             _ => ""
         };
         return cmdCommand;
@@ -213,7 +213,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [RelayCommand]
     public async Task Run()
     {
-        if (string.IsNullOrWhiteSpace(SelectedProduct.Key))
+        if (SelectedProduct is null || string.IsNullOrWhiteSpace(SelectedProduct.Key))
         {
             var dialogSettings = new DialogSettings()
             {
@@ -402,15 +402,5 @@ public partial class ModifyLicensingViewModel : ObservableObject
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
         }
-    }
-
-    public void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs _)
-    {
-        var productListView = (ListView)sender;
-        if (productListView.SelectedItem is null)
-        {
-            return;
-        }
-        SelectedProduct = (KeyValuePair<string, string>)productListView.SelectedItem;
     }
 }

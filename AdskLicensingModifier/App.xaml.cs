@@ -6,7 +6,7 @@ using AdskLicensingModifier.Models;
 using AdskLicensingModifier.Services;
 using AdskLicensingModifier.ViewModels;
 using AdskLicensingModifier.Views;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MainViewModel = AdskLicensingModifier.ViewModels.MainViewModel;
@@ -40,7 +40,7 @@ public partial class App
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).
-        ConfigureServices((context, services) =>
+        ConfigureServices((_, services) =>
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
@@ -75,7 +75,19 @@ public partial class App
             services.AddTransient<ShellViewModel>();
 
             // Configuration
-            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+            services.AddSingleton(sp =>
+            {
+                var cfg = sp.GetRequiredService<IConfiguration>();
+                var s = cfg.GetRequiredSection(nameof(LocalSettingsOptions));
+
+                var options = new LocalSettingsOptions
+                {
+                    ApplicationDataFolder = s["ApplicationDataFolder"],
+                    LocalSettingsFile = s["LocalSettingsFile"]
+                };
+
+                return options;
+            });
         }).
         Build();
 
@@ -92,6 +104,6 @@ public partial class App
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        await GetService<IActivationService>().ActivateAsync(args);
     }
 }
