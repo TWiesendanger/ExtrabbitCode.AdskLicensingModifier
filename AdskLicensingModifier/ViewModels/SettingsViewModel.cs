@@ -1,61 +1,46 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Input;
 using System.ServiceProcess;
-
+using System.Windows.Input;
 using AdskLicensingModifier.Contracts.Services;
 using AdskLicensingModifier.Helpers;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.UI;
+using Windows.Storage;
+
+// ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
-    private readonly IThemeSelectorService _themeSelectorService;
     private readonly IGenericMessageDialogService _messageDialogService;
-    private ElementTheme _elementTheme;
-    [ObservableProperty] private bool uiIsenabled;
-    [ObservableProperty] private bool desktopServiceIsOn;
-    private string _versionDescription;
-    private const string LICENSE_HELPER_EXE =
+    [ObservableProperty] public partial bool UiIsEnabled { get; set; }
+    [ObservableProperty] public partial bool DesktopServiceIsOn { get; set; }
+    [ObservableProperty] public partial ElementTheme ElementTheme { get; set; }
+    [ObservableProperty] public partial string VersionDescription { get; set; }
+
+    private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
 
-    public ElementTheme ElementTheme
-    {
-        get => _elementTheme;
-        set => SetProperty(ref _elementTheme, value);
-    }
-
-    public string VersionDescription
-    {
-        get => _versionDescription;
-        set => SetProperty(ref _versionDescription, value);
-    }
-
-    public ICommand SwitchThemeCommand
-    {
-        get;
-    }
+    public ICommand SwitchThemeCommand { get; }
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService, IGenericMessageDialogService messageDialogService)
     {
-        _themeSelectorService = themeSelectorService;
+        var themeSelectorService1 = themeSelectorService;
         _messageDialogService = messageDialogService;
-        _elementTheme = _themeSelectorService.Theme;
-        _versionDescription = GetVersionDescription();
+        ElementTheme = themeSelectorService1.Theme;
+        VersionDescription = GetVersionDescription();
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
-            async (param) =>
+            async void (param) =>
             {
                 if (ElementTheme != param)
                 {
                     ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
+                    await themeSelectorService1.SetThemeAsync(param);
                 }
             });
 
@@ -74,9 +59,6 @@ public partial class SettingsViewModel : ObservableObject
         {
             DesktopServiceIsOn = false;
         }
-
-        //var sc = new ServiceController("AdskLicensingService");
-        //DesktopServiceIsOn = sc.Status == ServiceControllerStatus.Running;
     }
 
     private static string GetVersionDescription()
@@ -87,7 +69,7 @@ public partial class SettingsViewModel : ObservableObject
         {
             var packageVersion = Package.Current.Id.Version;
 
-            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
         else
         {
@@ -97,21 +79,21 @@ public partial class SettingsViewModel : ObservableObject
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
-    private void CheckPath() => UiIsenabled = File.Exists(LICENSE_HELPER_EXE);
+    private void CheckPath() => UiIsEnabled = File.Exists(LicenseHelperExe);
 
     [RelayCommand]
     private async Task PrintListCopy()
     {
         var dataPackage = new DataPackage();
-        dataPackage.SetText($"\"{LICENSE_HELPER_EXE}\" list");
+        dataPackage.SetText($"\"{LicenseHelperExe}\" list");
         Clipboard.SetContent(dataPackage);
 
         var dialogSettings = new DialogSettings()
         {
             Title = "Command copied",
-            Message = $"Print list command was copied. Use it in a terminal window. ",
-            Color = Color.FromArgb(255, 160, 209, 77),
-            Symbol = ((char)0xE73E).ToString(),
+            Message = "Print list command was copied. Use it in a terminal window. ",
+            Color = ResourceHelper.GetColor("Success"),
+            Symbol = ResourceHelper.GetString("SuccessSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -124,11 +106,10 @@ public partial class SettingsViewModel : ObservableObject
         var process = new Process();
 
         process.StartInfo.FileName = "cmd.exe";
-        process.StartInfo.Arguments = $"/c \"{LICENSE_HELPER_EXE}\" list";
+        process.StartInfo.Arguments = $"/c \"{LicenseHelperExe}\" list";
         process.StartInfo.CreateNoWindow = true;
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
-        //process.StartInfo.RedirectStandardError = true;
 
         process.Start();
         string output;
@@ -142,8 +123,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Export successful",
             Message = $"Export was successful. Do you want to open the file from {Path.Combine(Path.GetTempPath(), "AdskLicenseOutput.json")} ?",
-            Color = Color.FromArgb(255, 160, 209, 77),
-            Symbol = ((char)0xE73E).ToString(),
+            Color = ResourceHelper.GetColor("Success"),
+            Symbol = ResourceHelper.GetString("SuccessSymbol"),
             PrimaryButtonIsEnabled = true,
             PrimaryButtonCommand = OpenLicenseOutputCommand,
             PrimaryButtonText = "Yes",
@@ -156,7 +137,7 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OpenLicenseOutput()
+    private static void OpenLicenseOutput()
     {
         Process.Start("notepad.exe", Path.Combine(Path.GetTempPath(), "AdskLicenseOutput.json"));
     }
@@ -167,9 +148,10 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Web Services";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
             return;
         }
 
@@ -177,8 +159,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -191,7 +173,9 @@ public partial class SettingsViewModel : ObservableObject
         const string path = @"C:\ProgramData\Autodesk\AdskLicensingService";
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
+            await Launcher.LaunchFolderAsync(folder);
+
             return;
         }
 
@@ -199,8 +183,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -213,9 +197,12 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Identity Services";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
+
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
+
             return;
         }
 
@@ -223,8 +210,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
 
@@ -232,12 +219,14 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void OpenAdskLicensingInstHelperPath()
+    private async Task OpenAdskLicensingInstHelperPath()
     {
         const string path = @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper";
+        var folder = await StorageFolder.GetFolderFromPathAsync(path);
+
         if (Directory.Exists(path))
         {
-            Process.Start("explorer.exe", path);
+            await Launcher.LaunchFolderAsync(folder);
             return;
         }
 
@@ -245,8 +234,8 @@ public partial class SettingsViewModel : ObservableObject
         {
             Title = "Path not found",
             Message = "Path was not found and could not be opened.",
-            Color = Color.FromArgb(255, 234, 93, 97),
-            Symbol = ((char)0xEA39).ToString(),
+            Color = ResourceHelper.GetColor("Error"),
+            Symbol = ResourceHelper.GetString("ErrorSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettings);
     }
@@ -256,8 +245,7 @@ public partial class SettingsViewModel : ObservableObject
         var sc = new ServiceController("AdskLicensingService");
         try
         {
-            var state = sc.Status; // will fail if service does not exist
-            UiIsenabled = true;
+            UiIsEnabled = true;
         }
         catch (InvalidOperationException)
         {
@@ -265,11 +253,11 @@ public partial class SettingsViewModel : ObservableObject
             {
                 Title = "Service not found",
                 Message = "Service AdskLicensingService was not found. You will be only able to generate commands, but not running them. Some Options are deactivated.",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
-            UiIsenabled = false;
+            UiIsEnabled = false;
             return;
         }
         catch (Exception exception)
@@ -278,12 +266,12 @@ public partial class SettingsViewModel : ObservableObject
             throw;
         }
 
-        var toogleSwitch = (ToggleSwitch)sender;
-        switch (toogleSwitch.IsOn)
+        var toggleSwitch = (ToggleSwitch)sender;
+        switch (toggleSwitch.IsOn)
         {
             case true:
                 {
-                    if (sc.Status == ServiceControllerStatus.Running || sc.Status == ServiceControllerStatus.StartPending)
+                    if (sc.Status is ServiceControllerStatus.Running or ServiceControllerStatus.StartPending)
                     {
                         return;
                     }
@@ -293,7 +281,7 @@ public partial class SettingsViewModel : ObservableObject
                 }
             case false:
                 {
-                    if (sc.Status == ServiceControllerStatus.Stopped || sc.Status == ServiceControllerStatus.StopPending)
+                    if (sc.Status is ServiceControllerStatus.Stopped or ServiceControllerStatus.StopPending)
                     {
                         return;
                     }

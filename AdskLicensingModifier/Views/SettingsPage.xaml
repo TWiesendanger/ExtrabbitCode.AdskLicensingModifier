@@ -1,12 +1,14 @@
-﻿<Page x:Class="AdskLicensingModifier.Views.SettingsPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:helpers="using:AdskLicensingModifier.Helpers"
-      xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:xaml="using:Microsoft.UI.Xaml"
-      mc:Ignorable="d">
+﻿<Page
+    x:Class="AdskLicensingModifier.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:AdskLicensingModifier.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xaml="using:Microsoft.UI.Xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:winUi="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
@@ -18,133 +20,149 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <labs:SettingsExpander Description="Set the theme of the app to your liking or let the app decide based on your windows settings."
-                                   Header="Theme"
-                                   IsExpanded="False">
-                <labs:SettingsExpander.HeaderIcon>
+            <controls:SettingsExpander
+                Margin="{StaticResource MediumBottomMargin}"
+                Description="Set the theme of the app to your liking or let the app decide based on your windows settings."
+                Header="Theme"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE91B;" />
-                </labs:SettingsExpander.HeaderIcon>
-                <labs:SettingsExpander.Items>
-                    <labs:SettingsCard ContentAlignment="Left">
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
                         <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                            <RadioButton x:Uid="Settings_Theme_Light"
-                                         Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                         FontSize="15"
-                                         IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
+                            <RadioButton
+                                x:Uid="Settings_Theme_Light"
+                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                FontSize="15"
+                                IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
                                 <RadioButton.CommandParameter>
                                     <xaml:ElementTheme>Light</xaml:ElementTheme>
                                 </RadioButton.CommandParameter>
                             </RadioButton>
-                            <RadioButton x:Uid="Settings_Theme_Dark"
-                                         Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                         FontSize="15"
-                                         IsChecked="True">
+                            <RadioButton
+                                x:Uid="Settings_Theme_Dark"
+                                Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                FontSize="15"
+                                IsChecked="True">
                                 <RadioButton.CommandParameter>
                                     <xaml:ElementTheme>Dark</xaml:ElementTheme>
                                 </RadioButton.CommandParameter>
                             </RadioButton>
-                            <!--<RadioButton x:Uid="Settings_Theme_Default"
-                                         Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                         FontSize="15"
-                                         IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
-                                <RadioButton.CommandParameter>
-                                    <xaml:ElementTheme>Default</xaml:ElementTheme>
-                                </RadioButton.CommandParameter>
-                            </RadioButton>-->
                         </StackPanel>
-                    </labs:SettingsCard>
-                </labs:SettingsExpander.Items>
-            </labs:SettingsExpander>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
 
-            <labs:SettingsExpander Grid.Row="1"
-                                   Description="Contains a few settings for interacting with the license behavior of autodesk products."
-                                   Header="License modifier settings"
-                                   IsExpanded="True">
-                <labs:SettingsExpander.HeaderIcon>
+            <controls:SettingsExpander
+                Grid.Row="1"
+                Margin="{StaticResource MediumBottomMargin}"
+                Description="Contains a few settings for interacting with the license behavior of autodesk products."
+                Header="License modifier settings"
+                IsExpanded="True">
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xE9E9;" />
-                </labs:SettingsExpander.HeaderIcon>
-                <labs:SettingsExpander.Items>
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
 
-                    <labs:SettingsCard Description="Check if licensing is working and what licenses there are."
-                                       Header="Print List Command">
-                        <StackPanel Margin="{StaticResource MediumTopBottomMargin}"
-                                    Orientation="Horizontal">
-                            <Button Margin="0,0,20,0"
-                                    Command="{x:Bind ViewModel.PrintListCommand}"
-                                    Content="Print List"
-                                    IsEnabled="{x:Bind ViewModel.UiIsenabled}"
-                                    ToolTipService.ToolTip="Will output a json file with license infos found on running workstation." />
-                            <Button Command="{x:Bind ViewModel.PrintListCopyCommand}"
-                                    Content="Copy Print list command"
-                                    ToolTipService.ToolTip="Will copy the command to check what licenses are used on system. Run this command in a terminal." />
+                    <controls:SettingsCard
+                        Description="Check if licensing is working and what licenses there are."
+                        Header="Print List Command"
+                        HeaderIcon="{winUi:FontIcon Glyph=&#xE768;}">
+                        <StackPanel Margin="{StaticResource MediumTopBottomMargin}" Orientation="Horizontal">
+                            <Button
+                                Margin="0,0,20,0"
+                                Command="{x:Bind ViewModel.PrintListCommand}"
+                                Content="Print List"
+                                IsEnabled="{x:Bind ViewModel.UiIsEnabled}"
+                                ToolTipService.ToolTip="Will output a json file with license infos found on running workstation." />
+                            <Button
+                                Command="{x:Bind ViewModel.PrintListCopyCommand}"
+                                Content="Copy Print list command"
+                                ToolTipService.ToolTip="Will copy the command to check what licenses are used on system. Run this command in a terminal." />
                         </StackPanel>
-                    </labs:SettingsCard>
-                    <labs:SettingsCard Command="{x:Bind ViewModel.OpenLoginStatePathCommand}"
-                                       Description="Use this to open windows explorer and navigating to the loginstate.xml path."
-                                       Header="Open Login state path"
-                                       IsClickEnabled="True" />
-                    <labs:SettingsCard Command="{x:Bind ViewModel.OpenAdskLicensingPathCommand}"
-                                       Description="Use this to open windows explorer and navigating to the adsk licensing path."
-                                       Header="Open Adsk licensing path"
-                                       IsClickEnabled="True" />
-                    <labs:SettingsCard Command="{x:Bind ViewModel.OpenAdskLicensingInstHelperPathCommand}"
-                                       Description="Use this to open windows explorer and navigating to the licensing helper path."
-                                       Header="Open licensing helper path"
-                                       IsClickEnabled="True" />
-                    <labs:SettingsCard Command="{x:Bind ViewModel.OpenAdskIdentityServicePathCommand}"
-                                       Description="Use this to open windows explorer and navigating to the identity Service path."
-                                       Header="Open identity service path"
-                                       IsClickEnabled="True" />
-                    <labs:SettingsCard Description="Check if the license service is running."
-                                       Header="Desktop Service">
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        ActionIcon="{winUi:FontIcon Glyph=&#xE8A7;}"
+                        Command="{x:Bind ViewModel.OpenLoginStatePathCommand}"
+                        Description="Use this to open windows explorer and navigating to the loginstate.xml path."
+                        Header="Open Login state path"
+                        HeaderIcon="{winUi:FontIcon Glyph=&#xE8B7;}"
+                        IsClickEnabled="True" />
+                    <controls:SettingsCard
+                        ActionIcon="{winUi:FontIcon Glyph=&#xE8A7;}"
+                        Command="{x:Bind ViewModel.OpenAdskLicensingPathCommand}"
+                        Description="Use this to open windows explorer and navigating to the adsk licensing path."
+                        Header="Open Adsk licensing path"
+                        HeaderIcon="{winUi:FontIcon Glyph=&#xE8B7;}"
+                        IsClickEnabled="True" />
+                    <controls:SettingsCard
+                        ActionIcon="{winUi:FontIcon Glyph=&#xE8A7;}"
+                        Command="{x:Bind ViewModel.OpenAdskLicensingInstHelperPathCommand}"
+                        Description="Use this to open windows explorer and navigating to the licensing helper path."
+                        Header="Open licensing helper path"
+                        HeaderIcon="{winUi:FontIcon Glyph=&#xE8B7;}"
+                        IsClickEnabled="True" />
+                    <controls:SettingsCard
+                        ActionIcon="{winUi:FontIcon Glyph=&#xE8A7;}"
+                        Command="{x:Bind ViewModel.OpenAdskIdentityServicePathCommand}"
+                        Description="Use this to open windows explorer and navigating to the identity Service path."
+                        Header="Open identity service path"
+                        HeaderIcon="{winUi:FontIcon Glyph=&#xE8B7;}"
+                        IsClickEnabled="True" />
+                    <controls:SettingsCard Description="Check if the license service is running." Header="Desktop Service">
                         <StackPanel Orientation="Horizontal">
-                            <ToggleSwitch IsEnabled="{x:Bind ViewModel.UiIsenabled}"
-                                          IsOn="{x:Bind ViewModel.DesktopServiceIsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          OffContent="Desktop Service Off"
-                                          OnContent="Desktop Service On"
-                                          Toggled="{x:Bind ViewModel.DesktopLicensingServiceToggled}" />
-                            <Button Width="45"
-                                    Margin="20,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    Command="{x:Bind ViewModel.RefreshDesktopLicensingStateCommand}"
-                                    IsEnabled="{x:Bind ViewModel.UiIsenabled}">
-                                <FontIcon FontFamily="Segoe MDL2 Assets"
-                                          Glyph="&#xE72C;" />
+                            <ToggleSwitch
+                                IsEnabled="{x:Bind ViewModel.UiIsEnabled}"
+                                IsOn="{x:Bind ViewModel.DesktopServiceIsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                OffContent="Desktop Service Off"
+                                OnContent="Desktop Service On"
+                                Toggled="{x:Bind ViewModel.DesktopLicensingServiceToggled}" />
+                            <Button
+                                Width="45"
+                                Margin="20,0,0,0"
+                                HorizontalAlignment="Right"
+                                Command="{x:Bind ViewModel.RefreshDesktopLicensingStateCommand}"
+                                IsEnabled="{x:Bind ViewModel.UiIsEnabled}">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72C;" />
                             </Button>
                         </StackPanel>
-                    </labs:SettingsCard>
-                </labs:SettingsExpander.Items>
-            </labs:SettingsExpander>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
 
 
-            <labs:SettingsExpander Grid.Row="2"
-                                   Description="Contains a few settings for interacting with the license behavior of autodesk products."
-                                   Header="App infos"
-                                   IsExpanded="False">
-                <labs:SettingsExpander.HeaderIcon>
+            <controls:SettingsExpander
+                Grid.Row="2"
+                Description="Contains a few settings for interacting with the license behavior of autodesk products."
+                Header="App infos"
+                IsExpanded="False">
+                <controls:SettingsExpander.HeaderIcon>
                     <FontIcon Glyph="&#xEA6C;" />
-                </labs:SettingsExpander.HeaderIcon>
-                <labs:SettingsExpander.Items>
-                    <labs:SettingsCard Description="Version Info and about link for github."
-                                       Header="Version Info">
+                </controls:SettingsExpander.HeaderIcon>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard Description="Version Info and about link for github." Header="Version Info">
                         <StackPanel>
-                            <TextBlock Margin="{StaticResource XSmallTopMargin}"
-                                       Style="{ThemeResource BodyTextBlockStyle}"
-                                       Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+                            <TextBlock
+                                Margin="{StaticResource XSmallTopMargin}"
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
 
-                            <HyperlinkButton Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                                             Content="About"
-                                             NavigateUri="https://github.com/TWiesendanger/AdskLicensingModifierWinUi3" />
+                            <HyperlinkButton
+                                Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                                Content="About"
+                                NavigateUri="https://github.com/TWiesendanger/AdskLicensingModifierWinUi3" />
                         </StackPanel>
-                    </labs:SettingsCard>
-                </labs:SettingsExpander.Items>
-            </labs:SettingsExpander>
-            <Image Grid.Row="3"
-                   Grid.Column="0"
-                   Height="150"
-                   Margin="50"
-                   HorizontalAlignment="Center"
-                   Source="\Assets/extrabbit.png" />
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+            <Image
+                Grid.Row="3"
+                Grid.Column="0"
+                Height="150"
+                Margin="50"
+                HorizontalAlignment="Center"
+                Source="\Assets/extrabbit.png" />
         </Grid>
     </ScrollViewer>
 </Page>

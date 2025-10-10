@@ -1,42 +1,41 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.UI;
 using AdskLicensingModifier.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using AdskLicensingModifier.Contracts.Services;
+using AdskLicensingModifier.Models;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+// ReSharper disable InconsistentNaming
 
 namespace AdskLicensingModifier.ViewModels;
 
 public partial class ModifyLicensingViewModel : ObservableObject
 {
     private readonly IGenericMessageDialogService _messageDialogService;
-    public Task Initialization
-    {
-        get;
-    }
+    public Task Initialization { get; }
 
-    private const string LICENSE_HELPER_EXE =
+    private const string LicenseHelperExe =
         @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper\AdskLicensingInstHelper.exe";
-    [ObservableProperty] private string? searchText;
-    [ObservableProperty] private bool resultAskRun;
-    [ObservableProperty] private bool wasRunCommandSuccessfull;
-    [ObservableProperty] private string result = "";
-    [ObservableProperty] private string? serverNames;
-    [ObservableProperty] private LicenseType selectedLicenseType = LicenseType.Reset;
-    [ObservableProperty] private ServerType selectedServerType;
-    [ObservableProperty] private List<ServerType>? serverTypes;
-    [ObservableProperty] private List<LicenseType>? licenseTypes;
-    [ObservableProperty] private bool uiIsenabled;
-    [ObservableProperty] private bool commandDialogBarOpen;
-    [ObservableProperty] private bool serverTypeIsEnabled;
-    [ObservableProperty] private Dictionary<string, string>? adskProducts;
-    [ObservableProperty] private Dictionary<string, string>? filteredAdskProducts;
-    private Dictionary<string, string>? _filteredYearAdskProducts;
-    [ObservableProperty] private KeyValuePair<string, string> selectedProduct;
-    [ObservableProperty] private string selectedYear = "2025";
-    private string _productFeatureCode = "2025.0.0.F";
+    [ObservableProperty] public partial string? SearchText { get; set; }
+    [ObservableProperty] public partial bool ResultAskRun { get; set; }
+    [ObservableProperty] public partial bool WasRunCommandSuccessful { get; set; }
+    [ObservableProperty] public partial string Result { get; set; } = "";
+    [ObservableProperty] public partial string? ServerNames { get; set; }
+    [ObservableProperty] public partial LicenseType SelectedLicenseType { get; set; } = LicenseType.Reset;
+    [ObservableProperty] public partial ServerType SelectedServerType { get; set; }
+    [ObservableProperty] public partial List<ServerType>? ServerTypes { get; set; }
+    [ObservableProperty] public partial List<LicenseType>? LicenseTypes { get; set; }
+    [ObservableProperty] public partial bool UiIsEnabled { get; set; }
+    [ObservableProperty] public partial bool CommandDialogBarOpen { get; set; }
+    [ObservableProperty] public partial bool ServerTypeIsEnabled { get; set; }
+    [ObservableProperty] public partial Dictionary<string, string>? AdskProducts { get; set; } = [];
+    [ObservableProperty] public partial ObservableCollection<ProductKeyItem>? FilteredAdskProducts { get; set; } = [];
+    public Dictionary<string, string>? FilteredYearAdskProducts { get; set; }
+    [ObservableProperty] public partial ProductKeyItem? SelectedProduct { get; set; }
+    [ObservableProperty] public partial AdskYearEnum SelectedYear { get; set; } = AdskYearEnum.Y2026;
+    private string _productFeatureCode = "2026.0.0.F";
 
     public ModifyLicensingViewModel(IGenericMessageDialogService messageDialogService)
     {
@@ -47,56 +46,66 @@ public partial class ModifyLicensingViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         AdskProducts = await ReadAutodeskProductsAsync();
-        FilteredAdskProducts = new Dictionary<string, string>();
-        _filteredYearAdskProducts = new Dictionary<string, string>();
+        FilteredAdskProducts ??= [];
+
         if (AdskProducts != null)
         {
-            _filteredYearAdskProducts = string.IsNullOrEmpty(SelectedYear)
-                ? AdskProducts
-                : AdskProducts.Where(x => x.Key.Contains(SelectedYear, StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+            var year = ((int)SelectedYear).ToString();
+            FilteredYearAdskProducts = AdskProducts
+                            .Where(x => x.Key.Contains(year, StringComparison.OrdinalIgnoreCase))
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        FilteredAdskProducts = _filteredYearAdskProducts;
-
-        ServerTypes = new List<ServerType>(Enum.GetValues(typeof(ServerType)).Cast<ServerType>());
-        LicenseTypes = new List<LicenseType>(Enum.GetValues(typeof(LicenseType)).Cast<LicenseType>());
+        UpdateFilteredProductsCollection();
 
         await CheckPathAsync();
         SetFeatureCode(SelectedYear);
-
     }
 
-    partial void OnSelectedYearChanged(string value)
+    private void UpdateFilteredProductsCollection()
     {
-        SelectedProduct = new KeyValuePair<string, string>();
+        FilteredAdskProducts?.Clear();
+
+        if (FilteredYearAdskProducts != null)
+        {
+            foreach (var kv in FilteredYearAdskProducts)
+            {
+                FilteredAdskProducts?.Add(new ProductKeyItem(kv.Key, kv.Value));
+            }
+        }
+    }
+
+    partial void OnSelectedYearChanged(AdskYearEnum value)
+    {
+        SelectedProduct = null;
         if (AdskProducts != null)
         {
-            _filteredYearAdskProducts = string.IsNullOrEmpty(value)
-                ? AdskProducts
-                : AdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+            var year = ((int)value).ToString();
+            FilteredYearAdskProducts = AdskProducts
+                            .Where(x => x.Key.Contains(year, StringComparison.OrdinalIgnoreCase))
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        FilteredAdskProducts = _filteredYearAdskProducts;
+        UpdateFilteredProductsCollection();
 
         SetFeatureCode(value);
         SearchText = "";
     }
 
-    private void SetFeatureCode(string value) =>
-        _productFeatureCode = value switch
+    private void SetFeatureCode(AdskYearEnum year) =>
+        _productFeatureCode = ((int)year) switch
         {
-            "2020" => "2020.0.0.F",
-            "2021" => "2021.0.0.F",
-            "2022" => "2022.0.0.F",
-            "2023" => "2023.0.0.F",
-            "2024" => "2024.0.0.F",
-            "2025" => "2025.0.0.F",
+            2020 => "2020.0.0.F",
+            2021 => "2021.0.0.F",
+            2022 => "2022.0.0.F",
+            2023 => "2023.0.0.F",
+            2024 => "2024.0.0.F",
+            2025 => "2025.0.0.F",
+            2026 => "2026.0.0.F",
             _ => ""
         };
 
-    private async Task<Dictionary<string, string>?> ReadAutodeskProductsAsync()
+    private static async Task<Dictionary<string, string>?> ReadAutodeskProductsAsync()
     {
         var uri = new Uri("ms-appx:///Assets/resources/AutodeskProducts.txt");
         var productKeys = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
@@ -110,32 +119,38 @@ public partial class ModifyLicensingViewModel : ObservableObject
     private async Task CheckPathAsync()
     {
 
-        if (File.Exists(LICENSE_HELPER_EXE) == false)
+        if (File.Exists(LicenseHelperExe) == false)
         {
             var dialogSettings = new DialogSettings()
             {
                 Title = "AdskLicensingInstHelper not found",
-                Message = $"AdskLicensingInstHelper was not found. This exe is needed to be able to change any license settings for autodesk products. Make sure you have the autodesk licensing service installed. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Message = "AdskLicensingInstHelper was not found. This exe is needed to be able to change any license settings for autodesk products. Make sure you have the autodesk licensing service installed. ",
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
-            UiIsenabled = false;
+            UiIsEnabled = false;
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
         }
-        UiIsenabled = true;
+        UiIsEnabled = true;
     }
 
     partial void OnSearchTextChanged(string? value)
     {
-        SelectedProduct = new KeyValuePair<string, string>();
+        SelectedProduct = null;
 
-        if (_filteredYearAdskProducts != null)
+        if (FilteredYearAdskProducts != null)
         {
-            FilteredAdskProducts = string.IsNullOrEmpty(value)
-                ? _filteredYearAdskProducts
-                : _filteredYearAdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
+            var filtered = string.IsNullOrEmpty(value)
+                ? FilteredYearAdskProducts
+                : FilteredYearAdskProducts.Where(x => x.Key.Contains(value, StringComparison.OrdinalIgnoreCase))
                     .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            FilteredAdskProducts?.Clear();
+            foreach (var kv in filtered)
+            {
+                FilteredAdskProducts?.Add(new ProductKeyItem(kv.Key, kv.Value));
+            }
         }
     }
 
@@ -159,14 +174,14 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [RelayCommand]
     public async Task Generate()
     {
-        if (string.IsNullOrWhiteSpace(SelectedProduct.Key))
+        if (SelectedProduct is null || string.IsNullOrWhiteSpace(SelectedProduct.Key))
         {
             var dialogSettings = new DialogSettings()
             {
                 Title = "No product selected",
-                Message = $"No product was selected. Make sure you have selected one product. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Message = "No product was selected. Make sure you have selected one product. ",
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
@@ -185,11 +200,11 @@ public partial class ModifyLicensingViewModel : ObservableObject
         var cmdCommand = SelectedLicenseType switch
         {
             LicenseType.Network =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()} --lic_server_type {SelectedServerType.ToString().ToUpper()} --lic_servers {ServerNames}",
             LicenseType.Standalone or LicenseType.User =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method {SelectedLicenseType.ToString().ToUpper()}",
             LicenseType.Reset =>
-                $@"""{LICENSE_HELPER_EXE}"" change --prod_key {SelectedProduct.Value} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
+                $@"""{LicenseHelperExe}"" change --prod_key {SelectedProduct?.Key} --prod_ver {_productFeatureCode} --lic_method """" --lic_server_type """" --lic_servers """"",
             _ => ""
         };
         return cmdCommand;
@@ -198,14 +213,14 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [RelayCommand]
     public async Task Run()
     {
-        if (string.IsNullOrWhiteSpace(SelectedProduct.Key))
+        if (SelectedProduct is null || string.IsNullOrWhiteSpace(SelectedProduct.Key))
         {
             var dialogSettings = new DialogSettings()
             {
                 Title = "No product selected",
-                Message = $"No product was selected. Make sure you have selected one product. ",
-                Color = Color.FromArgb(255, 234, 93, 97),
-                Symbol = ((char)0xEA39).ToString(),
+                Message = "No product was selected. Make sure you have selected one product. ",
+                Color = ResourceHelper.GetColor("Error"),
+                Symbol = ResourceHelper.GetString("ErrorSymbol")
             };
             await _messageDialogService.ShowDialog(dialogSettings);
             return;
@@ -214,12 +229,12 @@ public partial class ModifyLicensingViewModel : ObservableObject
         var dialogSettingsConfirmation = new DialogSettings()
         {
             Title = "Are you sure?",
-            Message = $"Are you sure that you want to run the command locally? ",
+            Message = "Are you sure that you want to run the command locally? ",
             PrimaryButtonText = "Yes",
             PrimaryButtonCommand = SetAskRunResultCommand,
             SecondaryButtonText = "No",
-            Color = Color.FromArgb(94, 126, 191, 239),
-            Symbol = ((char)0xF142).ToString(),
+            Color = ResourceHelper.GetColor("Information"),
+            Symbol = ResourceHelper.GetString("QuestionMarkSymbol")
         };
         await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
 
@@ -250,7 +265,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
         {
             var keyName = @"Software";
             using var key = Registry.CurrentUser.OpenSubKey(keyName, true);
-            var keyNames = key?.GetSubKeyNames();
+            key?.GetSubKeyNames();
             try
             {
                 key?.DeleteSubKeyTree("FLEXlm License Manager");
@@ -271,9 +286,6 @@ public partial class ModifyLicensingViewModel : ObservableObject
         process.StartInfo.RedirectStandardError = true;
 
         process.Start();
-        //var output = process.StandardOutput.ReadToEnd();
-        //var errorOutput = process.StandardError.ReadToEnd();
-        //process.WaitForExit();
 
         if (SelectedLicenseType == LicenseType.Reset)
         {
@@ -282,16 +294,16 @@ public partial class ModifyLicensingViewModel : ObservableObject
         }
         else
         {
-            WasRunCommandSuccessfull = true;
+            WasRunCommandSuccessful = true;
         }
 
-        if (WasRunCommandSuccessfull)
+        if (WasRunCommandSuccessful)
         {
             CommandDialogBarOpen = true;
         }
 
         ResultAskRun = false;
-        WasRunCommandSuccessfull = false;
+        WasRunCommandSuccessful = false;
         await Task.CompletedTask;
     }
 
@@ -316,33 +328,32 @@ public partial class ModifyLicensingViewModel : ObservableObject
                 var newFilePath = Path.Combine(Path.GetDirectoryName(idServiceDbFile) ?? string.Empty, newFileName);
 
                 File.Move(idServiceDbFile, newFilePath);
-                WasRunCommandSuccessfull = true;
+                WasRunCommandSuccessful = true;
             }
             catch (IOException)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "File in use or access denied",
                     Message =
-                        $"idservices.db could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
+                        "idservices.db could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
-
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
             catch (Exception ex)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "Error",
                     Message = $"There was an error while running a command. The error was: {ex}.",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
@@ -361,45 +372,35 @@ public partial class ModifyLicensingViewModel : ObservableObject
                 var newFileName = $"LoginState.xml_{DateTime.Now:yyyyMMdd_HHmmss}_{Guid.NewGuid()}";
                 var newFilePath = Path.Combine(Path.GetDirectoryName(loginStateFile) ?? string.Empty, newFileName);
                 File.Move(loginStateFile, newFilePath);
-                WasRunCommandSuccessfull = true;
+                WasRunCommandSuccessful = true;
             }
             catch (IOException)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "File in use or access denied",
                     Message =
-                        $"LoginState.xml could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
+                        "LoginState.xml could not be renamed because the file is either in use or you don't have access to it. This can lead to resetting not working. ",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
             catch (Exception ex)
             {
-                WasRunCommandSuccessfull = false;
+                WasRunCommandSuccessful = false;
                 var dialogSettingsConfirmation = new DialogSettings()
                 {
                     Title = "Error",
                     Message = $"There was an error while running a command. The error was: {ex}.",
                     PrimaryButtonText = "OK",
-                    Color = Color.FromArgb(255, 234, 93, 97),
-                    Symbol = ((char)0xEA39).ToString(),
+                    Color = ResourceHelper.GetColor("Error"),
+                    Symbol = ResourceHelper.GetString("ErrorSymbol")
                 };
                 await _messageDialogService.ShowDialog(dialogSettingsConfirmation);
             }
         }
-    }
-
-    public void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var producListView = (ListView)sender;
-        if (producListView.SelectedItem is null)
-        {
-            return;
-        }
-        SelectedProduct = (KeyValuePair<string, string>)producListView.SelectedItem;
     }
 }
