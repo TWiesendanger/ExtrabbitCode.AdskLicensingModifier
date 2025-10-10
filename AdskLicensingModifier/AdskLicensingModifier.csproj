@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<LangVersion>preview</LangVersion>
@@ -17,14 +17,15 @@
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<SelfContained>true</SelfContained>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-		<AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-		<GenerateTestArtifacts>False</GenerateTestArtifacts>
-		<AppxBundle>Always</AppxBundle>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Never</AppxBundle>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
-		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>	
+		<PackageCertificateKeyFile>AdskLicensingModifier_TemporaryKey.pfx</PackageCertificateKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<Content Include="Assets\AppIcon01.png" />
