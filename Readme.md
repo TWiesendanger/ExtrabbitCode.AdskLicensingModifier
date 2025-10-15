@@ -3,7 +3,7 @@
 ![Logo](AdskLicensingModifier/Assets/AppMainLogo.png)
 
 - [Adsk License Modifier](#adsk-license-modifier)
-  - [Version 1.2.0.0](#version-1200)
+  - [Version 1.3.0.0](#version-1300)
   - [Predecessor of ADSKLincensingModify](#predecessor-of-adsklincensingmodify)
   - [Start](#start)
   - [Settings](#settings)
@@ -46,7 +46,7 @@ Adsk License Modifier is a GUI for this exe and makes this task easy.
 > **Note**
 > If you want to check out the manual way by autodesk, feel free to use this link: [Autodesk Knowledge](https://knowledge.autodesk.com/search-result/caas/sfdcarticles/sfdcarticles/How-to-change-or-reset-licensing-on-your-Autodesk-software.html)
 
-## Version 1.2.0.0
+## Version 1.3.0.0
 
 Features:
 - Supports Autodesk 2020 - 2026 products
