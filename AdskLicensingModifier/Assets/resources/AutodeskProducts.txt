@@ -935,3 +935,139 @@ PowerShape Standard 2026;P09R1
 PowerShape Ultimate 2026;Q11R1
 T1 Enterprise Multi-flex 2026;535R1
 Autodesk Inventor Nesting 2026;C1QR1
+Autodesk 3ds Max 2027;128S1
+Autodesk 3ds Max 2027 with Softimage;978S1
+Autodesk Advance Steel 2027;959S1
+Autodesk Alias AutoStudio 2027;966S1
+Autodesk Alias Concept 2027;A63S1
+Autodesk Alias Design 2027;712S1
+Autodesk Alias SpeedForm 2027;A62S1
+Autodesk Alias Surface 2027;736S1
+Autodesk AutoCAD 2027;001S1
+Autodesk AutoCAD Architecture 2027;185S1
+Autodesk AutoCAD Design Suite Premium 2027;768S1
+Autodesk AutoCAD Design Suite Standard 2027;767S1
+Autodesk AutoCAD Electrical 2027;225S1
+Autodesk AutoCAD Inventor LT Suite 2027;596S1
+Autodesk AutoCAD LT 2027;057S1
+Autodesk AutoCAD LT Civil Suite 2027;545S1
+Autodesk AutoCAD Map 3D 2027;129S1
+Autodesk AutoCAD Mechanical 2027;206S1
+Autodesk AutoCAD MEP 2027;235S1
+Autodesk AutoCAD Plant 3D 2027;426S1
+Autodesk AutoCAD Raster Design 2027;340S1
+Autodesk AutoCAD Revit LT Suite 2027;834S1
+Autodesk Building Design Suite Premium 2027;765S1
+Autodesk Building Design Suite Standard 2027;784S1
+Autodesk Building Design Suite Ultimate 2027;766S1
+Autodesk Burn 2027;C0YS1
+Autodesk CFD Design Study Environment 2027;812S1
+Autodesk CFD Premium 2027;810S1
+Autodesk CFD Ultimate 2027;811S1
+Autodesk Civil 3D 2027;237S1
+Autodesk Fabrication CADmep 2027;839S1
+Autodesk Fabrication CAMduct 2027;842S1
+Autodesk Fabrication ESTmep 2027;841S1
+Autodesk Factory Design Suite Premium 2027;757S1
+Autodesk Factory Design Suite Standard 2027;789S1
+Autodesk Factory Design Suite Ultimate 2027;760S1
+Autodesk Factory Design Utilities 2027;P03S1
+Autodesk FeatureCAM Premium 2027;A9FS1
+Autodesk FeatureCAM Standard 2027;A9GS1
+Autodesk FeatureCAM Ultimate 2027;A9ES1
+Autodesk Flame 2027;C0TS1
+Autodesk Flame 2027 – Education;C14S1
+Autodesk Flame Assist 2027;C0VS1
+Autodesk Flame Premium 2027;C0XS1
+Autodesk Flare 2027;C0WS1
+Autodesk Helius PFA 2027;899S1
+Autodesk HSM Premium 2027;C12S1
+Autodesk HSM Ultimate 2027;C13S1
+Autodesk Infrastructure Design Suite Premium 2027;786S1
+Autodesk Infrastructure Design Suite Standard 2027;787S1
+Autodesk Infrastructure Design Suite Ultimate 2027;785S1
+Autodesk Inventor 2027;208S1
+Autodesk Inventor Engineer-to-Order 2027 – Developer;A66S1
+Autodesk Inventor Engineer-to-Order 2027 – Distribution;996S1
+Autodesk Inventor Engineer-to-Order 2027 – Server;997S1
+Autodesk Inventor Engineer-to-Order Series 2027;805S1
+Autodesk Inventor Engineer-to-Order Server 2027;752S1
+Autodesk Inventor HSM Premium 2027;969S1
+Autodesk Inventor HSM Ultimate 2027;970S1
+Autodesk Inventor LT 2027;529S1
+Autodesk Inventor OEM 2027;798S1
+Autodesk Inventor Professional 2027;797S1
+Autodesk Lustre 2027;C0US1
+Autodesk Lustre Burn 2027;C10S1
+Autodesk Lustre ShotReactor 2027;C11S1
+Autodesk Manufacturing Automation Utility 2027;A9YS1
+Autodesk Manufacturing Data Exchange Utility Premium 2027;A9VS1
+Autodesk Manufacturing Data Exchange Utility Standard 2027;A9XS1
+Autodesk Manufacturing Post Processor Utility 2027;A9TS1
+Autodesk MEP Fabrication Suite 2027;00QS1
+Autodesk Moldflow Adviser Premium 2027;571S1
+Autodesk Moldflow Adviser Ultimate 2027;572S1
+Autodesk Moldflow Design 2027;837S1
+Autodesk Moldflow Insight Premium 2027;574S1
+Autodesk Moldflow Insight Standard 2027;573S1
+Autodesk Moldflow Insight Ultimate 2027;575S1
+Autodesk Moldflow Synergy 2027;579S1
+Autodesk Nastran 2027;986S1
+Autodesk Nastran In-CAD 2027;987S1
+Autodesk Navisworks Manage 2027;507S1
+Autodesk Navisworks Simulate 2027;506S1
+Autodesk PartMaker 2027;A9SS1
+Autodesk Plant Design Suite Premium 2027;763S1
+Autodesk Plant Design Suite Standard 2027;788S1
+Autodesk Plant Design Suite Ultimate 2027;764S1
+Autodesk Point Layout 2027;925S1
+Autodesk PowerInspect Premium 2027;A9JS1
+Autodesk PowerInspect Ultimate 2027;A9HS1
+Autodesk PowerMill Modeling 2027;A9US1
+Autodesk PowerMill Premium 2027;A9AS1
+Autodesk PowerMill Standard 2027;A9QS1
+Autodesk PowerMill Ultimate 2027;A9PS1
+Autodesk PowerShape Premium 2027;A9MS1
+Autodesk PowerShape Standard 2027;A9NS1
+Autodesk PowerShape Ultimate 2027;A9LS1
+Autodesk ReCap Pro 2027;919S1
+Autodesk Revit 2027;829S1
+Autodesk Revit LT 2027;828S1
+Autodesk Robot Structural Analysis Professional 2027;547S1
+Autodesk SketchBook for  2027;871S1
+Autodesk TruComp 2027;00ES1
+Autodesk TruFiber 2027;01WS1
+Autodesk TruLaser 2027;00DS1
+Autodesk TruNest 2027 – Nesting Engine;00FS1
+Autodesk TruNest Composites 2027;00BS1
+Autodesk TruNest Contour 2027;00AS1
+Autodesk TruNest Multi-Tool 2027;00CS1
+Autodesk TruPlan 2027;01VS1
+Autodesk Vault Office 2027;555S1
+Autodesk Vault Professional 2027;569S1
+Autodesk Vault Workgroup 2027;559S1
+Autodesk Vehicle Tracking 2027;955S1
+Autodesk VRED 2027;884S1
+Autodesk VRED Design 2027;885S1
+Autodesk VRED Presenter 2027;888S1
+Autodesk VRED Professional 2027;886S1
+Autodesk VRED Render Node – consumption-based license 2027;A93S1
+Autodesk VRED Render Node 2027;890S1
+Autodesk VRED Server 2027;887S1
+Autodesk Wiretap Gateway 2027;C0ZS1
+FeatureCAM Premium 2027;Q16S1
+FeatureCAM Standard 2027;Q15S1
+FeatureCAM Ultimate 2027;Q17S1
+HSMWorks Premium 2027;873S1
+HSMWorks Ultimate 2027;872S1
+PowerInspect Premium 2027;Q13S1
+PowerInspect Standard 2027;Q12S1
+PowerInspect Ultimate 2027;Q14S1
+PowerMill Premium 2027;P07S1
+PowerMill Standard 2027;A9ZS1
+PowerMill Ultimate 2027;P08S1
+PowerShape Premium 2027;Q10S1
+PowerShape Standard 2027;P09S1
+PowerShape Ultimate 2027;Q11S1
+T1 Enterprise Multi-flex 2027;535S1
+Autodesk Inventor Nesting 2027;C1QS1

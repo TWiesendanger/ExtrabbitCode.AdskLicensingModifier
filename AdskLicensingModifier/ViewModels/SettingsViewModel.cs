@@ -148,9 +148,9 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Web Services";
-        var folder = await StorageFolder.GetFolderFromPathAsync(path);
         if (Directory.Exists(path))
         {
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
             await Launcher.LaunchFolderAsync(folder);
             return;
         }
@@ -197,10 +197,9 @@ public partial class SettingsViewModel : ObservableObject
         var appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         var path = $@"{appDataFolderPath}\Autodesk\Identity Services";
-        var folder = await StorageFolder.GetFolderFromPathAsync(path);
-
         if (Directory.Exists(path))
         {
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
             await Launcher.LaunchFolderAsync(folder);
 
             return;
@@ -222,10 +221,9 @@ public partial class SettingsViewModel : ObservableObject
     private async Task OpenAdskLicensingInstHelperPath()
     {
         const string path = @"C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\Current\helper";
-        var folder = await StorageFolder.GetFolderFromPathAsync(path);
-
         if (Directory.Exists(path))
         {
+            var folder = await StorageFolder.GetFolderFromPathAsync(path);
             await Launcher.LaunchFolderAsync(folder);
             return;
         }

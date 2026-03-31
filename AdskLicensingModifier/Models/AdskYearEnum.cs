@@ -10,4 +10,5 @@ public enum AdskYearEnum
     Y2024 = 2024,
     Y2025 = 2025,
     Y2026 = 2026,
+    Y2027 = 2027,
 }
