@@ -51,8 +51,10 @@ Adsk License Modifier is a GUI for this exe and makes this task easy.
 
 Features:
 - Supports Autodesk 2020 - 2027 products
+- Dotnet 10.0 and WindowsAppSDK 1.8.260317003
 
 Bugfixes:
+- Fixed a bug where the path was not correctly checked if some shortcuts were used in settings.
 
 ## Version 1.3.0.0
 
