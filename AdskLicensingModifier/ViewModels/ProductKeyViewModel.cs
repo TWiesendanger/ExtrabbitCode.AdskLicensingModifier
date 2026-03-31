@@ -51,6 +51,7 @@ public partial class ProductKeyViewModel : ObservableObject
         var uri2024 = new Uri("ms-appx:///Assets/resources/ProductKeys2024.txt");
         var uri2025 = new Uri("ms-appx:///Assets/resources/ProductKeys2025.txt");
         var uri2026 = new Uri("ms-appx:///Assets/resources/ProductKeys2026.txt");
+        var uri2027 = new Uri("ms-appx:///Assets/resources/ProductKeys2027.txt");
 
         var productKeys2015 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2015);
         var productKeys2016 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2016);
@@ -64,6 +65,7 @@ public partial class ProductKeyViewModel : ObservableObject
         var productKeys2024 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2024);
         var productKeys2025 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2025);
         var productKeys2026 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2026);
+        var productKeys2027 = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri2027);
 
         var productKeyList2015 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2015);
         var productKeyList2016 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2016);
@@ -77,6 +79,7 @@ public partial class ProductKeyViewModel : ObservableObject
         var productKeyList2024 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2024);
         var productKeyList2025 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2025);
         var productKeyList2026 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2026);
+        var productKeyList2027 = await Windows.Storage.FileIO.ReadLinesAsync(productKeys2027);
 
         var combinedList = new List<string>();
 
@@ -92,6 +95,7 @@ public partial class ProductKeyViewModel : ObservableObject
         combinedList.AddRange(productKeyList2024);
         combinedList.AddRange(productKeyList2025);
         combinedList.AddRange(productKeyList2026);
+        combinedList.AddRange(productKeyList2027);
 
         var splitParts = combinedList.Select((line => line.Split(';'))).ToArray();
         var dict = new Dictionary<string, string>();

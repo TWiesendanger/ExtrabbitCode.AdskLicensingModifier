@@ -34,8 +34,8 @@ public partial class ModifyLicensingViewModel : ObservableObject
     [ObservableProperty] public partial ObservableCollection<ProductKeyItem>? FilteredAdskProducts { get; set; } = [];
     public Dictionary<string, string>? FilteredYearAdskProducts { get; set; }
     [ObservableProperty] public partial ProductKeyItem? SelectedProduct { get; set; }
-    [ObservableProperty] public partial AdskYearEnum SelectedYear { get; set; } = AdskYearEnum.Y2026;
-    private string _productFeatureCode = "2026.0.0.F";
+    [ObservableProperty] public partial AdskYearEnum SelectedYear { get; set; } = AdskYearEnum.Y2027;
+    private string _productFeatureCode = "2027.0.0.F";
 
     public ModifyLicensingViewModel(IGenericMessageDialogService messageDialogService)
     {
@@ -102,6 +102,7 @@ public partial class ModifyLicensingViewModel : ObservableObject
             2024 => "2024.0.0.F",
             2025 => "2025.0.0.F",
             2026 => "2026.0.0.F",
+            2027 => "2027.0.0.F",
             _ => ""
         };
 
