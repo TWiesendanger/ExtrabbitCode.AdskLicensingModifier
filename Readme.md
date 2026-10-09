@@ -5,7 +5,7 @@
 - [Adsk License Modifier](#adsk-license-modifier)
   - [Version 1.4.0.0](#version-1400)
   - [Version 1.3.0.0](#version-1300)
-  - [Predecessor of ADSKLincensingModify](#predecessor-of-adsklincensingmodify)
+  - [Successor of ADSKLicensingModify](#successor-of-adsklicensingmodify)
   - [Start](#start)
   - [Settings](#settings)
     - [Theme](#theme)
@@ -68,9 +68,9 @@ Bugfixes:
 - Fixed a bug where sometimes a crash occured while opening a folder
 - Fixed some visual bugs
 
-## Predecessor of ADSKLincensingModify
+## Successor of ADSKLicensingModify
 
-This tool is the predecessor of the powershell version found in this [repository](https://github.com/TWiesendanger/ADSKLincensingModify).
+This tool is the successor of the powershell version found in this [repository](https://github.com/TWiesendanger/ADSKLicensingModify).
 This tool should have all the same functions but with a much more modern gui framework (winui3) and you can directly download it from microsoft store [download](https://www.microsoft.com/store/productId/9NJHVT90GLP5).
 
 ## Start
